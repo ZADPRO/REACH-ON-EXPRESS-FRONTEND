@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+
+import PropTypes from "prop-types";
+
+import Header from "./components/01-Header/Header";
+import Dashboard from "./components/02-Dashboard/Dashboard";
+import Key from "./components/03-Key/Key";
+import Employees from "./components/04-Employees/Employees";
+import Tracking from "./components/05-Tracking/Tracking";
+import Settings from "./components/06-Settings/Settings";
+import Profile from "./components/07-Profile/Profile";
+import Login from "./components/08-Login/Login";
+import Booking from "./components/09-Booking/Booking";
+
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <Router>
+      <ConditionalHeader>
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/booking" element={<Booking />} />
+          <Route path="/mapping" element={<Key />} />
+          <Route path="/employee" element={<Employees />} />
+          <Route path="/tracking" element={<Tracking />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </ConditionalHeader>
+    </Router>
+  );
 }
 
-export default App
+function ConditionalHeader({ children }) {
+  const location = useLocation();
+
+  const excludedRoutes = ["/login"];
+  const isExcluded = excludedRoutes.includes(location.pathname);
+
+  return isExcluded ? children : <Header>{children}</Header>;
+}
+
+export default App;
+
+ConditionalHeader.propTypes = {
+  children: PropTypes.node,
+};
