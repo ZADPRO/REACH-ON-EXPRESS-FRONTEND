@@ -4,7 +4,8 @@ import { FileUpload } from "primereact/fileupload";
 import { InputSwitch } from "primereact/inputswitch";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import { useState } from "react";
+import { useState, useRef } from "react";
+import { Toast } from "primereact/toast";
 import * as XLSX from "xlsx";
 
 import sampleExcel from "../../assets/excel/sample.xlsx";
@@ -12,6 +13,7 @@ import sampleExcel from "../../assets/excel/sample.xlsx";
 export default function UploadExcelSidebar() {
   const [checked, setChecked] = useState(false);
   const [uploadedData, setUploadedData] = useState(null);
+  const toast = useRef(null);
 
   const leftToolbarTemplate = () => (
     <div className="flex flex-wrap gap-2">
@@ -39,50 +41,61 @@ export default function UploadExcelSidebar() {
 
     return excelDate;
   };
+
   const onUploadHandler = (event) => {
     const file = event.files[0];
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      const data = new Uint8Array(e.target.result);
-      const workbook = XLSX.read(data, { type: "array" });
-      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      let jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
+      try {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: "array" });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        let jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
 
-      jsonData = jsonData.map((row) => {
-        if (row["Purchased Date"]) {
-          row["Purchased Date"] = formatExcelDate(row["Purchased Date"]);
-        }
-        return row;
-      });
-
-      const leafIdSet = new Map();
-      const vendorIdSet = new Map();
-
-      jsonData.forEach((row, index) => {
-        const leafId = row["leafId"];
-        const vendorId = row["vendorLeaf"];
-
-        if (leafId) {
-          if (leafIdSet.has(leafId)) {
-            const prevIndex = leafIdSet.get(leafId);
-            jsonData[prevIndex].duplicate = true;
-            row.duplicate = true;
+        jsonData = jsonData.map((row) => {
+          if (row["Purchased Date"]) {
+            row["Purchased Date"] = formatExcelDate(row["Purchased Date"]);
           }
-          leafIdSet.set(leafId, index);
-        }
+          return row;
+        });
 
-        if (vendorId) {
-          if (vendorIdSet.has(vendorId)) {
-            const prevIndex = vendorIdSet.get(vendorId);
-            jsonData[prevIndex].duplicate = true;
-            row.duplicate = true;
+        const leafIdSet = new Map();
+        const vendorIdSet = new Map();
+
+        jsonData.forEach((row, index) => {
+          const leafId = row["leafId"];
+          const vendorId = row["vendorLeaf"];
+
+          if (leafId) {
+            if (leafIdSet.has(leafId)) {
+              const prevIndex = leafIdSet.get(leafId);
+              jsonData[prevIndex].duplicate = true;
+              row.duplicate = true;
+            }
+            leafIdSet.set(leafId, index);
           }
-          vendorIdSet.set(vendorId, index);
-        }
-      });
 
-      setUploadedData(jsonData);
+          if (vendorId) {
+            if (vendorIdSet.has(vendorId)) {
+              const prevIndex = vendorIdSet.get(vendorId);
+              jsonData[prevIndex].duplicate = true;
+              row.duplicate = true;
+            }
+            vendorIdSet.set(vendorId, index);
+          }
+        });
+
+        setUploadedData(jsonData);
+      } catch (error) {
+        console.log("error", error);
+        toast.current.show({
+          severity: "error",
+          summary: "Upload Failed",
+          detail: "Invalid file format. Please check the file and try again.",
+          life: 3000,
+        });
+      }
     };
 
     reader.readAsArrayBuffer(file);
@@ -100,8 +113,24 @@ export default function UploadExcelSidebar() {
     if (uploadedData) {
       console.log("uploadedData", uploadedData);
       console.log("Payload:", JSON.stringify(uploadedData, null, 2));
+
+      localStorage.setItem("uploadedExcel", JSON.stringify(uploadedData));
+
+      toast.current.show({
+        severity: "success",
+        summary: "Upload Successful",
+        detail: "Data has been successfully uploaded.",
+        life: 3000,
+      });
+
+      resetUpload();
     } else {
-      console.warn("No data to upload.");
+      toast.current.show({
+        severity: "error",
+        summary: "Upload Failed",
+        detail: "No data found to upload.",
+        life: 3000,
+      });
     }
   };
 
@@ -123,7 +152,10 @@ export default function UploadExcelSidebar() {
 
   return (
     <div>
+      <Toast ref={toast} />
+
       <Toolbar className="mb-2 mt-2" left={leftToolbarTemplate}></Toolbar>
+
       {!uploadedData ? (
         <>
           <div className="flex align-items-center">
@@ -188,7 +220,6 @@ export default function UploadExcelSidebar() {
             <Button
               label="Upload"
               icon="pi pi-cloud-upload"
-              aria-hidden={false}
               className="p-button-success ml-2"
               onClick={uploadToConsole}
             />

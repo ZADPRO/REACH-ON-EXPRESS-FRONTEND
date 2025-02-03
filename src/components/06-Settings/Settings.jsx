@@ -5,6 +5,8 @@ import restroDoc from "../../assets/react.svg";
 import paymentMethods from "../../assets/react.svg";
 import money from "../../assets/react.svg";
 
+import PriceSidebar from "../../pages/PriceSidebar/PriceSidebar";
+
 import { Sidebar } from "primereact/sidebar";
 
 // import OffersSidebar from "../../Pages/OffersSidebar/OffersSidebar";
@@ -13,13 +15,18 @@ import { Sidebar } from "primereact/sidebar";
 // import PaymentMethodsSidebar from "../../Pages/PaymentMethodsSidebar/PaymentMethodsSidebar";
 // import MoneyTransferSidebar from "../../Pages/MoneyTransferSidebar/MoneyTransferSidebar";
 import { useState } from "react";
+import PartnersSidebar from "../../pages/PartnersSidebar/PartnersSidebar";
 
 const cardsData = [
-  { id: 1, title: "Parcel Booking", icon: offersIcon },
-  { id: 2, title: "Mapping", icon: category },
-  { id: 3, title: "Employee", icon: restroDoc },
-  { id: 4, title: "Tracking", icon: paymentMethods },
-  { id: 5, title: "Restrictions", icon: money },
+  { id: 1, title: "Partners", icon: offersIcon },
+  { id: 2, title: "Vendors", icon: offersIcon },
+  { id: 3, title: "Price", icon: offersIcon },
+  { id: 4, title: "Categories", icon: offersIcon },
+  { id: 5, title: "Parcel Booking", icon: offersIcon },
+  { id: 6, title: "Mapping", icon: category },
+  { id: 7, title: "Employee", icon: restroDoc },
+  { id: 8, title: "Tracking", icon: paymentMethods },
+  { id: 9, title: "Restrictions", icon: money },
 ];
 
 export default function Settings() {
@@ -46,22 +53,22 @@ export default function Settings() {
     setVisibleSidebar(true);
   };
 
-  // const renderSidebarContent = () => {
-  //   switch (selectedCard) {
-  //     case "Offers":
-  //       return <OffersSidebar />;
-  //     case "Food Category":
-  //       return <FoodCategorySidebar />;
-  //     case "Restro Documents":
-  //       return <RestroDocSidebar />;
-  //     case "Payment Methods":
-  //       return <PaymentMethodsSidebar />;
-  //     case "Money Transfer":
-  //       return <MoneyTransferSidebar />;
-  //     default:
-  //       return <p>Select an option to view details.</p>;
-  //   }
-  // };
+  const renderSidebarContent = () => {
+    switch (selectedCard) {
+      case "Price":
+        return <PriceSidebar />;
+      case "Partners":
+        return <PartnersSidebar />;
+      // case "Restro Documents":
+      //   return <RestroDocSidebar />;
+      // case "Payment Methods":
+      //   return <PaymentMethodsSidebar />;
+      // case "Money Transfer":
+      //   return <MoneyTransferSidebar />;
+      // default:
+      //   return <p>Select an option to view details.</p>;
+    }
+  };
 
   return (
     <div>
@@ -84,7 +91,7 @@ export default function Settings() {
         style={{ width: "70vw" }}
         onHide={() => setVisibleSidebar(false)}
       >
-        {/* {renderSidebarContent()} */}
+        {renderSidebarContent()}
       </Sidebar>
     </div>
   );
