@@ -13,18 +13,16 @@ export default function UploadExcelSidebar() {
   const [checked, setChecked] = useState(false);
   const [uploadedData, setUploadedData] = useState(null);
 
-  const leftToolbarTemplate = () => {
-    return (
-      <div className="flex flex-wrap gap-2">
-        <p>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla porro
-          deserunt nam eos quo. Necessitatibus esse ex consectetur libero rerum,
-          sunt, aperiam saepe recusandae eum delectus, hic natus explicabo
-          quaerat.
-        </p>
-      </div>
-    );
-  };
+  const leftToolbarTemplate = () => (
+    <div className="flex flex-wrap gap-2">
+      <p>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nulla porro
+        deserunt nam eos quo. Necessitatibus esse ex consectetur libero rerum,
+        sunt, aperiam saepe recusandae eum delectus, hic natus explicabo
+        quaerat.
+      </p>
+    </div>
+  );
 
   const formatExcelDate = (excelDate) => {
     if (!excelDate) return "";
@@ -67,6 +65,14 @@ export default function UploadExcelSidebar() {
 
   const resetUpload = () => {
     setUploadedData(null);
+  };
+
+  const uploadToConsole = () => {
+    if (uploadedData) {
+      console.log("Payload:", JSON.stringify(uploadedData, null, 2));
+    } else {
+      console.warn("No data to upload.");
+    }
   };
 
   const downloadSampleExcel = () => {
@@ -149,10 +155,10 @@ export default function UploadExcelSidebar() {
               onClick={resetUpload}
             />
             <Button
-              label="Reupload"
-              icon="pi pi-upload"
-              className="p-button-secondary ml-2"
-              onClick={resetUpload}
+              label="Upload"
+              icon="pi pi-cloud-upload"
+              className="p-button-success ml-2"
+              onClick={uploadToConsole}
             />
           </div>
         </div>
