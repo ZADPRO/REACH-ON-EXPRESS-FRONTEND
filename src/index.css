@@ -56,3 +56,8 @@ p {
 .p-fieldset .p-fieldset-content {
   padding: 0.25rem !important;
 }
+
+.p-error {
+  background-color: #ffebeb !important;
+  color: #d32f2f !important;
+}

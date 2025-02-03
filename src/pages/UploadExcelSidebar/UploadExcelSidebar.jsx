@@ -39,7 +39,6 @@ export default function UploadExcelSidebar() {
 
     return excelDate;
   };
-
   const onUploadHandler = (event) => {
     const file = event.files[0];
     const reader = new FileReader();
@@ -57,10 +56,40 @@ export default function UploadExcelSidebar() {
         return row;
       });
 
+      const leafIdSet = new Map();
+      const vendorIdSet = new Map();
+
+      jsonData.forEach((row, index) => {
+        const leafId = row["leafId"];
+        const vendorId = row["vendorLeaf"];
+
+        if (leafId) {
+          if (leafIdSet.has(leafId)) {
+            const prevIndex = leafIdSet.get(leafId);
+            jsonData[prevIndex].duplicate = true;
+            row.duplicate = true;
+          }
+          leafIdSet.set(leafId, index);
+        }
+
+        if (vendorId) {
+          if (vendorIdSet.has(vendorId)) {
+            const prevIndex = vendorIdSet.get(vendorId);
+            jsonData[prevIndex].duplicate = true;
+            row.duplicate = true;
+          }
+          vendorIdSet.set(vendorId, index);
+        }
+      });
+
       setUploadedData(jsonData);
     };
 
     reader.readAsArrayBuffer(file);
+  };
+
+  const rowClassName = (rowData) => {
+    return rowData.duplicate ? "p-error" : "";
   };
 
   const resetUpload = () => {
@@ -69,6 +98,7 @@ export default function UploadExcelSidebar() {
 
   const uploadToConsole = () => {
     if (uploadedData) {
+      console.log("uploadedData", uploadedData);
       console.log("Payload:", JSON.stringify(uploadedData, null, 2));
     } else {
       console.warn("No data to upload.");
@@ -136,6 +166,7 @@ export default function UploadExcelSidebar() {
             paginator
             rows={10}
             showGridlines
+            rowClassName={rowClassName}
           >
             <Column
               header="S.No"
@@ -157,6 +188,7 @@ export default function UploadExcelSidebar() {
             <Button
               label="Upload"
               icon="pi pi-cloud-upload"
+              aria-hidden={false}
               className="p-button-success ml-2"
               onClick={uploadToConsole}
             />
