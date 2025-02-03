@@ -7,9 +7,11 @@ import { Column } from "primereact/column";
 import { useState } from "react";
 import * as XLSX from "xlsx";
 
+import sampleExcel from "../../assets/excel/sample.xlsx";
+
 export default function UploadExcelSidebar() {
   const [checked, setChecked] = useState(false);
-  const [uploadedData, setUploadedData] = useState(null); // To store uploaded Excel data
+  const [uploadedData, setUploadedData] = useState(null);
 
   const leftToolbarTemplate = () => {
     return (
@@ -24,7 +26,22 @@ export default function UploadExcelSidebar() {
     );
   };
 
-  // Function to handle file upload and parse Excel data
+  const formatExcelDate = (excelDate) => {
+    if (!excelDate) return "";
+
+    if (!isNaN(excelDate)) {
+      const date = new Date((excelDate - 25569) * 86400 * 1000);
+
+      const day = String(date.getDate()).padStart(2, "0");
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const year = date.getFullYear();
+
+      return `${day}-${month}-${year}`;
+    }
+
+    return excelDate;
+  };
+
   const onUploadHandler = (event) => {
     const file = event.files[0];
     const reader = new FileReader();
@@ -33,16 +50,39 @@ export default function UploadExcelSidebar() {
       const data = new Uint8Array(e.target.result);
       const workbook = XLSX.read(data, { type: "array" });
       const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-      const jsonData = XLSX.utils.sheet_to_json(worksheet); // Parse to JSON
-      setUploadedData(jsonData); // Save parsed data
+      let jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
+
+      jsonData = jsonData.map((row) => {
+        if (row["Purchased Date"]) {
+          row["Purchased Date"] = formatExcelDate(row["Purchased Date"]);
+        }
+        return row;
+      });
+
+      setUploadedData(jsonData);
     };
 
     reader.readAsArrayBuffer(file);
   };
 
-  // Function to reset uploaded data and show FileUpload again
   const resetUpload = () => {
-    setUploadedData(null); // Clear uploaded data
+    setUploadedData(null);
+  };
+
+  const downloadSampleExcel = () => {
+    const link = document.createElement("a");
+    link.href = sampleExcel;
+    link.download = "Sample_Upload_Template.xlsx";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const formatHeader = (key) => {
+    return key
+      .replace(/([A-Z])/g, " $1")
+      .replace(/^./, (str) => str.toUpperCase())
+      .trim();
   };
 
   return (
@@ -51,7 +91,12 @@ export default function UploadExcelSidebar() {
       {!uploadedData ? (
         <>
           <div className="flex align-items-center">
-            <Button icon="pi pi-download" rounded text />
+            <Button
+              icon="pi pi-download"
+              rounded
+              text
+              onClick={downloadSampleExcel}
+            />
             <p>Download Bulk Upload Sample Excel</p>
           </div>
           <div className="flex align-items-center mt-2 mb-2">
@@ -79,12 +124,23 @@ export default function UploadExcelSidebar() {
         </>
       ) : (
         <div>
-          <DataTable value={uploadedData} paginator rows={10}>
+          <DataTable
+            className="uploadDataTable"
+            value={uploadedData}
+            paginator
+            rows={10}
+            showGridlines
+          >
+            <Column
+              header="S.No"
+              body={(rowData, { rowIndex }) => rowIndex + 1}
+            />
             {uploadedData &&
               Object.keys(uploadedData[0]).map((key, index) => (
-                <Column key={index} field={key} header={key} />
+                <Column key={index} field={key} header={formatHeader(key)} />
               ))}
           </DataTable>
+
           <div className="mt-2">
             <Button
               label="Cancel"

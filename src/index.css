@@ -31,6 +31,10 @@ p {
   padding: 4px 1rem;
 }
 
+.uploadDataTable .p-datatable-tbody > tr > td {
+  padding: 1rem 1rem;
+}
+
 .primaryNav p {
   font-weight: bold;
   font-size: 17px;

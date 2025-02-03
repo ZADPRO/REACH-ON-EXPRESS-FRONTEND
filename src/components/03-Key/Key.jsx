@@ -50,33 +50,49 @@ export default function Key() {
     return `R${paddedNumber}${formattedDate}`;
   };
 
+  const generateRandomVendorLeaf = () => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let result = "";
+    for (let i = 0; i < 12; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  };
+
+  const calculateValidity = (purchasedDate) => {
+    const date = new Date(purchasedDate);
+    date.setDate(date.getDate() + 90);
+    return date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+  };
+
   useEffect(() => {
     const data = [
       {
         id: 1,
-        vendorLeaf: "Vendor A",
-        vendor: "Company A",
-        status: "Active",
+        vendorLeaf: generateRandomVendorLeaf(),
+        vendor: vendors[0].name, // Random vendor
+        status: state[0].name, // Random status
         purchasedDate: "2024-01-20",
-        validity: "2025-01-20",
+        validity: calculateValidity("2024-01-20"),
       },
       {
         id: 2,
-        vendorLeaf: "Vendor B",
-        vendor: "Company B",
-        status: "Inactive",
+        vendorLeaf: generateRandomVendorLeaf(),
+        vendor: vendors[1].name, // Random vendor
+        status: state[2].name, // Random status
         purchasedDate: "2023-12-15",
-        validity: "2024-12-15",
+        validity: calculateValidity("2023-12-15"),
       },
       {
         id: 3,
-        vendorLeaf: "Vendor C",
-        vendor: "Company C",
-        status: "Active",
+        vendorLeaf: generateRandomVendorLeaf(),
+        vendor: vendors[2].name, // Random vendor
+        status: state[4].name, // Random status
         purchasedDate: "2024-02-01",
-        validity: "2025-02-01",
+        validity: calculateValidity("2024-02-01"),
       },
     ];
+
     setCustomers(data);
   }, []);
 
@@ -84,15 +100,7 @@ export default function Key() {
     toast.current.show({
       severity: "info",
       summary: "Edit Action",
-      detail: `Editing record with Tracking ID: ${rowData.trackingId}`,
-    });
-  };
-
-  const handleDelete = (rowData) => {
-    toast.current.show({
-      severity: "warn",
-      summary: "Delete Action",
-      detail: `Deleted record with Tracking ID: ${rowData.trackingId}`,
+      detail: `Tracking ID: ${rowData.trackingId}`,
     });
   };
 
@@ -105,13 +113,6 @@ export default function Key() {
           onClick={() => handleEdit(rowData)}
           tooltipOptions={{ position: "bottom" }}
           tooltip="Edit"
-        />
-        <Button
-          icon="pi pi-trash"
-          className="p-button-rounded p-button-text p-button-danger"
-          onClick={() => handleDelete(rowData)}
-          tooltipOptions={{ position: "bottom" }}
-          tooltip="Delete"
         />
       </div>
     );
@@ -232,45 +233,45 @@ export default function Key() {
           <Column
             field="id"
             header="S.No"
-            style={{ width: "3rem" }}
+            style={{ minWidth: "3rem" }}
             body={(rowData, { rowIndex }) => rowIndex + 1}
           ></Column>
           <Column
             field="trackingId"
             header="Tracking ID"
             frozen
-            style={{ width: "10rem" }}
+            style={{ minWidth: "10rem" }}
           ></Column>
           <Column
             field="vendorLeaf"
             header="Vendor Leaf"
             frozen
-            style={{ width: "10rem" }}
+            style={{ minWidth: "10rem" }}
           ></Column>
           <Column
             field="vendor"
             header="Vendor"
-            style={{ width: "12rem" }}
+            style={{ minWidth: "12rem" }}
           ></Column>
           <Column
             field="status"
             header="Status"
-            style={{ width: "8rem" }}
+            style={{ minWidth: "8rem" }}
           ></Column>
           <Column
             field="purchasedDate"
             header="Purchased Date"
-            style={{ width: "10rem" }}
+            style={{ minWidth: "10rem" }}
           ></Column>
           <Column
             field="validity"
             header="Validity"
-            style={{ width: "10rem" }}
+            style={{ minWidth: "10rem" }}
           ></Column>
           <Column
             header="Action"
             body={actionBodyTemplate}
-            style={{ textAlign: "center", width: "10rem" }}
+            style={{ textAlign: "center", minWidth: "10rem" }}
           ></Column>
         </DataTable>
       </div>
