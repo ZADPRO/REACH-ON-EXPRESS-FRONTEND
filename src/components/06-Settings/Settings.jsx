@@ -16,6 +16,7 @@ import { Sidebar } from "primereact/sidebar";
 // import MoneyTransferSidebar from "../../Pages/MoneyTransferSidebar/MoneyTransferSidebar";
 import { useState } from "react";
 import PartnersSidebar from "../../pages/PartnersSidebar/PartnersSidebar";
+import VendorSidebar from "../../pages/VendorSidebar/VendorSidebar";
 
 const cardsData = [
   { id: 1, title: "Partners", icon: offersIcon },
@@ -59,8 +60,8 @@ export default function Settings() {
         return <PriceSidebar />;
       case "Partners":
         return <PartnersSidebar />;
-      // case "Restro Documents":
-      //   return <RestroDocSidebar />;
+      case "Vendors":
+        return <VendorSidebar />;
       // case "Payment Methods":
       //   return <PaymentMethodsSidebar />;
       // case "Money Transfer":
