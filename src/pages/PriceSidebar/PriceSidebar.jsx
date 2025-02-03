@@ -5,6 +5,7 @@ import { InputText } from "primereact/inputtext";
 import { Button } from "primereact/button";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import { MultiSelect } from "primereact/multiselect";
 import { Minimize2, Maximize2, IndianRupee } from "lucide-react";
 
 export default function PriceSidebar() {
@@ -14,6 +15,8 @@ export default function PriceSidebar() {
   const [minWeight, setMinWeight] = useState("");
   const [maxWeight, setMaxWeight] = useState("");
   const [price, setPrice] = useState("");
+
+  const [selectedPartners, setSelectedPartners] = useState(null);
 
   useEffect(() => {
     const storedPartners = JSON.parse(localStorage.getItem("vendors")) || [];
@@ -52,6 +55,19 @@ export default function PriceSidebar() {
     setMinWeight("");
     setMaxWeight("");
     setPrice("");
+  };
+
+  const quantityTemplate = (rowData) => {
+    return (
+      <Button
+        rounded
+        outlined
+        text
+        severity="info"
+        icon="pi pi-pencil"
+        onClick={() => console.log("Edit quantity for", rowData.id)}
+      />
+    );
   };
 
   return (
@@ -99,6 +115,17 @@ export default function PriceSidebar() {
           </div>
           <Button label="Add" severity="success" onClick={addProduct} />
         </div>
+        <Divider />
+        <MultiSelect
+          value={selectedPartners}
+          onChange={(e) => setSelectedPartners(e.value)}
+          options={partners}
+          optionLabel="name"
+          display="chip"
+          placeholder="Select Select Vendors"
+          maxSelectedLabels={3}
+          className="w-full md:w-14rem"
+        />
         <DataTable
           scrollable
           stripedRows
@@ -106,11 +133,17 @@ export default function PriceSidebar() {
           value={products}
           showGridlines
         >
-          <Column field="id" header="S.No" />
-          <Column field="partner" header="Partner" />
-          <Column field="minWeight" header="Min. Weight" />
-          <Column field="maxWeight" header="Max. Weight" />
-          <Column field="price" header="Price" />
+          <Column field="id" header="S.No" style={{ width: "4rem" }} />
+          <Column field="partner" header="Partner" style={{ width: "10rem" }} />
+          <Column field="minWeight" header="Min." style={{ width: "5rem" }} />
+          <Column field="maxWeight" header="Max." style={{ width: "5rem" }} />
+          <Column field="price" header="Price" style={{ width: "5rem" }} />
+          <Column
+            field="edit"
+            header="Actions"
+            style={{ width: "4rem" }}
+            body={quantityTemplate}
+          ></Column>
         </DataTable>
       </div>
     </div>
