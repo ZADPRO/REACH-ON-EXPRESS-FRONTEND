@@ -7,11 +7,19 @@ import { InputText } from "primereact/inputtext";
 export default function PartnersSidebar() {
   const [products, setProducts] = useState([]);
   const [showInputSection, setShowInputSection] = useState(false);
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
-    const data = [];
-    setProducts(data);
+    setProducts([]);
   }, []);
+
+  const addProduct = () => {
+    if (username.trim()) {
+      setProducts([...products, { id: products.length + 1, name: username }]);
+      setUsername("");
+      setShowInputSection(false);
+    }
+  };
 
   const header = (
     <>
@@ -28,9 +36,13 @@ export default function PartnersSidebar() {
             <span className="p-inputgroup-addon">
               <i className="pi pi-user"></i>
             </span>
-            <InputText placeholder="Username" />
+            <InputText
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </div>
-          <Button label="Add" severity="info" />
+          <Button label="Add" severity="info" onClick={addProduct} />
           <Button
             label="Cancel"
             severity="danger"
@@ -44,8 +56,11 @@ export default function PartnersSidebar() {
   const quantityTemplate = (rowData) => {
     return (
       <Button
-        label="Edit"
+        rounded
+        outlined
+        text
         severity="info"
+        icon="pi pi-pencil"
         onClick={() => console.log("Edit quantity for", rowData.id)}
       />
     );
@@ -65,7 +80,7 @@ export default function PartnersSidebar() {
         <Column
           field="id"
           header="S.No"
-          body={(rowData, rowIndex) => rowIndex.rowIndex + 1}
+          body={(_, rowIndex) => rowIndex.rowIndex + 1}
         ></Column>
         <Column field="name" header="Vendor"></Column>
         <Column
