@@ -15,8 +15,7 @@ export default function PriceSidebar() {
   const [minWeight, setMinWeight] = useState("");
   const [maxWeight, setMaxWeight] = useState("");
   const [price, setPrice] = useState("");
-
-  const [selectedPartners, setSelectedPartners] = useState(null);
+  const [selectedPartners, setSelectedPartners] = useState([]);
 
   useEffect(() => {
     const storedPartners = JSON.parse(localStorage.getItem("vendors")) || [];
@@ -30,12 +29,7 @@ export default function PriceSidebar() {
   }, []);
 
   const addProduct = () => {
-    if (!selectedPartner) {
-      alert("Please select a partner!");
-      return;
-    }
-
-    if (!minWeight || !maxWeight || !price) {
+    if (!selectedPartner || !minWeight || !maxWeight || !price) {
       alert("Please fill all the fields!");
       return;
     }
@@ -57,95 +51,105 @@ export default function PriceSidebar() {
     setPrice("");
   };
 
-  const quantityTemplate = (rowData) => {
-    return (
-      <Button
-        rounded
-        outlined
-        text
-        severity="info"
-        icon="pi pi-pencil"
-        onClick={() => console.log("Edit quantity for", rowData.id)}
-      />
-    );
-  };
+  const quantityTemplate = (rowData) => (
+    <Button
+      rounded
+      outlined
+      text
+      severity="info"
+      icon="pi pi-pencil"
+      onClick={() => console.log("Edit quantity for", rowData.id)}
+    />
+  );
+
+  const filteredProducts = selectedPartners.length
+    ? products.filter((p) =>
+        selectedPartners.some((sp) => sp.name === p.partner)
+      )
+    : products;
 
   return (
     <div className="m-4">
-      <div>
-        <Dropdown
-          value={selectedPartner}
-          onChange={(e) => setSelectedPartner(e.value)}
-          options={partners}
-          optionLabel="name"
-          placeholder="Select a Partner"
-          className="w-full md:w-14rem"
+      <Dropdown
+        value={selectedPartner}
+        onChange={(e) => setSelectedPartner(e.value)}
+        options={partners}
+        optionLabel="name"
+        placeholder="Select a Partner"
+        className="w-full md:w-14rem"
+      />
+
+      <Divider />
+
+      {selectedPartner && (
+        <>
+          <div className="flex gap-2">
+            <div className="p-inputgroup flex-1">
+              <span className="p-inputgroup-addon">
+                <Minimize2 size={17} />
+              </span>
+              <InputText
+                placeholder="Min. Weight"
+                value={minWeight}
+                onChange={(e) => setMinWeight(e.target.value)}
+              />
+            </div>
+            <div className="p-inputgroup flex-1">
+              <span className="p-inputgroup-addon">
+                <Maximize2 size={17} />
+              </span>
+              <InputText
+                placeholder="Max. Weight"
+                value={maxWeight}
+                onChange={(e) => setMaxWeight(e.target.value)}
+              />
+            </div>
+            <div className="p-inputgroup flex-1">
+              <span className="p-inputgroup-addon">
+                <IndianRupee size={17} />
+              </span>
+              <InputText
+                placeholder="Price"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+              />
+            </div>
+            <Button label="Add" severity="success" onClick={addProduct} />
+          </div>
+        </>
+      )}
+
+      <Divider />
+      <MultiSelect
+        value={selectedPartners}
+        onChange={(e) => setSelectedPartners(e.value)}
+        options={partners}
+        optionLabel="name"
+        display="chip"
+        placeholder="Select Vendors"
+        maxSelectedLabels={3}
+        className="w-full md:w-14rem"
+      />
+
+      <DataTable
+        scrollable
+        stripedRows
+        className="partnersVendorId mt-3"
+        value={filteredProducts}
+        showGridlines
+      >
+        <Column field="id" header="S.No" style={{ width: "4rem" }} />
+        <Column field="partner" header="Partner" style={{ width: "10rem" }} />
+        <Column field="minWeight" header="Min." style={{ width: "5rem" }} />
+        <Column field="maxWeight" header="Max." style={{ width: "5rem" }} />
+        <Column field="price" header="Price" style={{ width: "5rem" }} />
+        <Column
+          field="edit"
+          header="Actions"
+          style={{ width: "4rem" }}
+          body={quantityTemplate}
         />
-        <Divider />
-        <div className="flex gap-2">
-          <div className="p-inputgroup flex-1">
-            <span className="p-inputgroup-addon">
-              <Minimize2 size={17} />
-            </span>
-            <InputText
-              placeholder="Min. Weight"
-              value={minWeight}
-              onChange={(e) => setMinWeight(e.target.value)}
-            />
-          </div>
-          <div className="p-inputgroup flex-1">
-            <span className="p-inputgroup-addon">
-              <Maximize2 size={17} />
-            </span>
-            <InputText
-              placeholder="Max. Weight"
-              value={maxWeight}
-              onChange={(e) => setMaxWeight(e.target.value)}
-            />
-          </div>
-          <div className="p-inputgroup flex-1">
-            <span className="p-inputgroup-addon">
-              <IndianRupee size={17} />
-            </span>
-            <InputText
-              placeholder="Price"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-            />
-          </div>
-          <Button label="Add" severity="success" onClick={addProduct} />
-        </div>
-        <Divider />
-        <MultiSelect
-          value={selectedPartners}
-          onChange={(e) => setSelectedPartners(e.value)}
-          options={partners}
-          optionLabel="name"
-          display="chip"
-          placeholder="Select Select Vendors"
-          maxSelectedLabels={3}
-          className="w-full md:w-14rem"
-        />
-        <DataTable
-          scrollable
-          stripedRows
-          className="partnersVendorId mt-3"
-          value={products}
-          showGridlines
-        >
-          <Column field="id" header="S.No" style={{ width: "4rem" }} />
-          <Column field="partner" header="Partner" style={{ width: "10rem" }} />
-          <Column field="minWeight" header="Min." style={{ width: "5rem" }} />
-          <Column field="maxWeight" header="Max." style={{ width: "5rem" }} />
-          <Column field="price" header="Price" style={{ width: "5rem" }} />
-          <Column
-            field="edit"
-            header="Actions"
-            style={{ width: "4rem" }}
-            body={quantityTemplate}
-          ></Column>
-        </DataTable>
-      </div>
+      </DataTable>
     </div>
   );
 }
