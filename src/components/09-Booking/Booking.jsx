@@ -40,16 +40,15 @@ export default function Booking() {
                 <FloatLabel>
                   <Dropdown
                     value={partners}
-                    inputId="partnerDropDown"
+                    inputId="docType"
                     onChange={(e) => setPartners(e.value)}
                     options={vendors}
-                    filter
                     optionLabel="name"
                     className="w-full md:w-14rem"
                     checkmark={true}
                     highlightOnSelect={false}
                   />
-                  <label htmlFor="partnerDropDown">Type</label>
+                  <label htmlFor="docType">Type</label>
                 </FloatLabel>
 
                 <p className="flex align-items-center">
@@ -65,6 +64,80 @@ export default function Booking() {
                 </FloatLabel>
               </div>
               <Divider />
+
+              <div className="flex card justify-content-between">
+                <div className="flex flex-column align-items-start gap-3">
+                  <p>Consignor</p>
+                  <div className="flex flex-column gap-3 align-items-center justify-content-around">
+                    <div className="card flex flex-column md:flex-row gap-3">
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">
+                          <i className="pi pi-user"></i>
+                        </span>
+                        <InputText placeholder="Consignor's Name" />
+                      </div>
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">$</span>
+                        <InputText placeholder="Consignor's Address" />
+                      </div>
+                    </div>
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">$</span>
+                      <InputText placeholder="GST Number" />
+                    </div>
+                    <div className="card flex flex-column md:flex-row gap-3">
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">
+                          <i className="pi pi-user"></i>
+                        </span>
+                        <InputText placeholder="Phone" />
+                      </div>
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">$</span>
+                        <InputText placeholder="Email" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* =================== */}
+                <Divider layout="vertical" />
+                {/* =================== */}
+                <div className="flex flex-column align-items-start gap-3">
+                  <p>Consignee</p>
+                  <div className="p-inputgroup flex-1">
+                    <span className="p-inputgroup-addon">$</span>
+                    <InputText placeholder="Customer Ref No." />
+                  </div>
+                  <div className="card flex flex-column md:flex-row gap-3">
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">
+                        <i className="pi pi-user"></i>
+                      </span>
+                      <InputText placeholder="Consignor's Name" />
+                    </div>
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">$</span>
+                      <InputText placeholder="Consignor's Address" />
+                    </div>
+                  </div>
+                  <div className="p-inputgroup flex-1">
+                    <span className="p-inputgroup-addon">$</span>
+                    <InputText placeholder="GST Number" />
+                  </div>
+                  <div className="card flex flex-column md:flex-row gap-3">
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">
+                        <i className="pi pi-user"></i>
+                      </span>
+                      <InputText placeholder="Phone" />
+                    </div>
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">$</span>
+                      <InputText placeholder="Email" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </TabPanel>
           <TabPanel header="Previous Transactions"></TabPanel>
