@@ -61,3 +61,7 @@ p {
   background-color: #ffebeb !important;
   color: #d32f2f !important;
 }
+
+.partnersVendorId .p-datatable-wrapper {
+  scrollbar-width: thin !important;
+}

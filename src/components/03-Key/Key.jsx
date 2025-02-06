@@ -25,11 +25,8 @@ export default function Key() {
   const [visibleRight, setVisibleRight] = useState(false);
   const [dates, setDates] = useState(null);
 
-  const vendors = [
-    { name: "Blue Dart", code: 1 },
-    { name: "DHDC", code: 2 },
-    { name: "Delhivery", code: 3 },
-  ];
+  const vendors = JSON.parse(localStorage.getItem("partners"));
+  console.log("vendorsData", vendors);
 
   const state = [
     { name: "Not Assigned", code: 1 },
@@ -40,7 +37,7 @@ export default function Key() {
   ];
 
   const generateTrackingId = (id, date) => {
-    const paddedNumber = String(id).padStart(5, "0"); // Ensures 5 digits
+    const paddedNumber = String(id).padStart(5, "0");
     const formattedDate = new Date(date)
       .toLocaleDateString("en-US", {
         month: "2-digit",
@@ -70,26 +67,18 @@ export default function Key() {
       {
         id: 1,
         vendorLeaf: generateRandomVendorLeaf(),
-        vendor: vendors[0].name, // Random vendor
-        status: state[0].name, // Random status
+        vendor: vendors[0].name,
+        status: state[0].name,
         purchasedDate: "2024-01-20",
         validity: calculateValidity("2024-01-20"),
       },
       {
         id: 2,
         vendorLeaf: generateRandomVendorLeaf(),
-        vendor: vendors[1].name, // Random vendor
-        status: state[2].name, // Random status
+        vendor: vendors[1].name,
+        status: state[2].name,
         purchasedDate: "2023-12-15",
         validity: calculateValidity("2023-12-15"),
-      },
-      {
-        id: 3,
-        vendorLeaf: generateRandomVendorLeaf(),
-        vendor: vendors[2].name, // Random vendor
-        status: state[4].name, // Random status
-        purchasedDate: "2024-02-01",
-        validity: calculateValidity("2024-02-01"),
       },
     ];
 
@@ -127,7 +116,6 @@ export default function Key() {
           severity="success"
           onClick={() => setVisibleRight(true)}
         />
-        {/* <Button label="Upload Excel" icon="pi pi-upload" severity="info" /> */}
       </div>
     );
   };
@@ -177,9 +165,9 @@ export default function Key() {
             options={vendors}
             optionLabel="name"
             filter
-            placeholder="Vendors"
+            placeholder="Partners"
             maxSelectedLabels={3}
-            className="w-full md:w-20rem"
+            className="w-full md:w-14rem"
           />
           <MultiSelect
             value={selectedState}
@@ -189,7 +177,7 @@ export default function Key() {
             filter
             placeholder="Status"
             maxSelectedLabels={3}
-            className="w-full md:w-20rem"
+            className="w-full md:w-14rem"
           />
           <Calendar
             value={dates}
@@ -198,7 +186,7 @@ export default function Key() {
             readOnlyInput
             placeholder="Pick Multiple Dates"
             showButtonBar
-            className="w-full md:w-20rem"
+            className="w-full md:w-14rem"
           />
           <Calendar
             value={dates}
@@ -208,7 +196,7 @@ export default function Key() {
             showButtonBar
             placeholder="Pick Date Range"
             hideOnRangeSelection
-            className="w-full md:w-20rem"
+            className="w-full md:w-14rem"
           />
         </div>
         <Toolbar

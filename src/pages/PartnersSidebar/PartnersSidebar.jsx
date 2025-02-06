@@ -8,6 +8,8 @@ export default function PartnersSidebar() {
   const [products, setProducts] = useState([]);
   const [showInputSection, setShowInputSection] = useState(false);
   const [partners, setPartners] = useState("");
+  const [contactDetails, setContactDetails] = useState("");
+  const [validity, setValidity] = useState("");
 
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("partners")) || [];
@@ -18,11 +20,18 @@ export default function PartnersSidebar() {
     if (partners.trim()) {
       const newProducts = [
         ...products,
-        { id: products.length + 1, name: partners },
+        {
+          id: products.length + 1,
+          name: partners,
+          contact: contactDetails,
+          validity: validity,
+        },
       ];
       setProducts(newProducts);
       localStorage.setItem("partners", JSON.stringify(newProducts));
       setPartners("");
+      setContactDetails("");
+      setValidity("");
       setShowInputSection(false);
     }
   };
@@ -46,6 +55,26 @@ export default function PartnersSidebar() {
               placeholder="Partners"
               value={partners}
               onChange={(e) => setPartners(e.target.value)}
+            />
+          </div>
+          <div className="p-inputgroup flex-1">
+            <span className="p-inputgroup-addon">
+              <i className="pi pi-phone"></i>
+            </span>
+            <InputText
+              placeholder="Contact"
+              value={contactDetails}
+              onChange={(e) => setContactDetails(e.target.value)}
+            />
+          </div>
+          <div className="p-inputgroup flex-1">
+            <span className="p-inputgroup-addon">
+              <i className="pi pi-calendar"></i>
+            </span>
+            <InputText
+              placeholder="Validity"
+              value={validity}
+              onChange={(e) => setValidity(e.target.value)}
             />
           </div>
           <Button label="Add" severity="info" onClick={addProduct} />
@@ -89,6 +118,8 @@ export default function PartnersSidebar() {
           body={(_, rowIndex) => rowIndex.rowIndex + 1}
         ></Column>
         <Column field="name" header="Partners"></Column>
+        <Column field="contact" header="Contact"></Column>
+        <Column field="validity" header="Validity"></Column>
         <Column field="edit" header="Actions" body={quantityTemplate}></Column>
       </DataTable>
     </div>
