@@ -4,6 +4,7 @@ import { Divider } from "primereact/divider";
 import { TabView, TabPanel } from "primereact/tabview";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
+import { InputSwitch } from "primereact/inputswitch";
 
 export default function Booking() {
   const [partners, setPartners] = useState(null);
@@ -11,6 +12,8 @@ export default function Booking() {
 
   const vendors = JSON.parse(localStorage.getItem("partners"));
   console.log("vendorsData", vendors);
+
+  const [checked, setChecked] = useState(true);
 
   return (
     <div>
@@ -20,7 +23,7 @@ export default function Booking() {
       </div>
       <div className="bookingTab m-4">
         <TabView>
-          <TabPanel header="Place New Order">
+          <TabPanel header="Place New Order" className="">
             <div className="mt-2">
               <div className="flex justify-content-between gap-3">
                 <FloatLabel>
@@ -136,6 +139,79 @@ export default function Booking() {
                       <InputText placeholder="Email" />
                     </div>
                   </div>
+                </div>
+              </div>
+
+              <Divider />
+              <div className="card flex flex-column md:flex-row gap-3">
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Content Specification" />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Paper Enclosed" />
+                </div>
+              </div>
+
+              <Divider />
+
+              <div className="card flex flex-column md:flex-row gap-3">
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Declared Value" />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="No. Of Pieces" />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Actual Weight" />
+                </div>
+              </div>
+
+              <Divider />
+
+              <InputSwitch
+                checked={checked}
+                onChange={(e) => setChecked(e.value)}
+              />
+
+              <div className="card flex mt-3 flex-column md:flex-row gap-3">
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Height" disabled={!checked} />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Weight" disabled={!checked} />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Breadth" disabled={!checked} />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Charged Weight" disabled={!checked} />
                 </div>
               </div>
             </div>
