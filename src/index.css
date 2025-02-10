@@ -31,7 +31,8 @@ p {
   padding: 4px 1rem;
 }
 
-.uploadDataTable .p-datatable-tbody > tr > td {
+.uploadDataTable .p-datatable-tbody > tr > td,
+.employeeDataTable .p-datatable-tbody > tr > td {
   padding: 1rem 1rem;
 }
 

@@ -12,7 +12,7 @@ import { Sidebar } from "primereact/sidebar";
 import EmployeeSidebar from "../../pages/EmployeeSidebar/EmployeeSidebar";
 
 export default function Employees() {
-  const [products, setProducts] = useState(null);
+  const [employees, setEmployees] = useState(null);
   const [selectedProducts, setSelectedProducts] = useState(null);
   const [globalFilter, setGlobalFilter] = useState(null);
   const [visibleRight, setVisibleRight] = useState(false);
@@ -20,7 +20,10 @@ export default function Employees() {
   const toast = useRef(null);
   const dt = useRef(null);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
+    setEmployees(storedEmployees);
+  }, []);
 
   const exportCSV = () => {
     dt.current.exportCSV();
@@ -81,43 +84,49 @@ export default function Employees() {
 
           <DataTable
             ref={dt}
-            value={products}
+            value={employees}
             selection={selectedProducts}
             onSelectionChange={(e) => setSelectedProducts(e.value)}
             dataKey="id"
             scrollable
             stripedRows
+            showGridlines
             paginator
+            className="employeeDataTable"
+            scrollHeight="350px"
             rows={10}
             rowsPerPageOptions={[5, 10, 25]}
             paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+            currentPageReportTemplate="Showing {first} to {last} of {totalRecords} employees"
             globalFilter={globalFilter}
             header={header}
           >
             <Column
               field="code"
+              frozen
               header="S.No"
+              body={(rowData, rowIndex) => rowIndex.rowIndex + 1}
               style={{ minWidth: "4rem" }}
             ></Column>
             <Column
-              field="name"
+              field="firstName"
               header="Employee Name"
               frozen
+              body={(rowData) => `${rowData.firstName} ${rowData.lastName}`}
               style={{ minWidth: "13rem" }}
             ></Column>
             <Column
-              field="name"
+              field="designation"
               header="Designation"
               style={{ minWidth: "13rem" }}
             ></Column>
             <Column
-              field="name"
+              field="email"
               header="Email"
               style={{ minWidth: "13rem" }}
             ></Column>
             <Column
-              field="name"
+              field="mobile"
               header="Contact Number"
               style={{ minWidth: "13rem" }}
             ></Column>
