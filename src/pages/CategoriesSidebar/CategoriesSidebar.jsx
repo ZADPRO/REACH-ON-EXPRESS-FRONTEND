@@ -13,10 +13,15 @@ export default function CategoriesSidebar() {
   const [categories, setCategories] = useState(null);
   const [newCategory, setNewCategory] = useState("");
   const [showInput, setShowInput] = useState(false);
+  const [subCategory, setSubCategory] = useState("");
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    const storedCategories = JSON.parse(localStorage.getItem("categories"));
-    setCategories(storedCategories || []);
+    const storedCategories =
+      JSON.parse(localStorage.getItem("categories")) || [];
+    setCategories(storedCategories);
+    const storedData = JSON.parse(localStorage.getItem("subCategories")) || [];
+    setData(storedData);
   }, []);
 
   const handleDropdownChange = (e) => {
@@ -39,6 +44,24 @@ export default function CategoriesSidebar() {
       localStorage.setItem("categories", JSON.stringify(updatedCategories));
       setNewCategory("");
       setShowInput(false);
+    }
+  };
+
+  const handleAddSubCategory = () => {
+    console.log("selectedCategory", selectedCategory);
+    console.log(
+      "selectedCategory && subCategory.trim()",
+      selectedCategory && subCategory.trim()
+    );
+    if (selectedCategory) {
+      const newData = [
+        ...data,
+        { id: data.length + 1, category: selectedCategory.name, subCategory },
+      ];
+      console.log("newData", newData);
+      setData(newData);
+      localStorage.setItem("subCategories", JSON.stringify(newData));
+      setSubCategory("");
     }
   };
 
@@ -129,13 +152,19 @@ export default function CategoriesSidebar() {
                 <i className="pi pi-user"></i>
               </span>
               <InputText
-                placeholder="Add Sub Categories"
+                value={subCategory}
+                onChange={(e) => setSubCategory(e.target.value)}
+                placeholder="Add Sub Category"
                 style={{ maxWidth: "14rem" }}
               />
             </div>
           </div>
           <div className="flex gap-3 align-items-center justify-content-end">
-            <Button label="Add" severity="info" />
+            <Button
+              label="Add"
+              severity="info"
+              onClick={handleAddSubCategory}
+            />
             <Button
               label="Cancel"
               severity="danger"
@@ -146,7 +175,7 @@ export default function CategoriesSidebar() {
         </div>
       )}
       <DataTable
-        value={customers}
+        value={data}
         showGridlines
         stripedRows
         scrollable
