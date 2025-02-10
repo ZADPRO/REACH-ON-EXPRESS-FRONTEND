@@ -21,12 +21,21 @@ export default function Employees() {
   const dt = useRef(null);
 
   useEffect(() => {
+    fetchEmployees();
+  }, []);
+
+  const fetchEmployees = () => {
     const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
     setEmployees(storedEmployees);
-  }, []);
+  };
 
   const exportCSV = () => {
     dt.current.exportCSV();
+  };
+
+  const onEmployeeAdded = () => {
+    fetchEmployees(); // Refresh the employees list
+    setVisibleRight(false); // Close the sidebar
   };
 
   const leftToolbarTemplate = () => {
@@ -144,7 +153,7 @@ export default function Employees() {
         style={{ width: "70vw" }}
         onHide={() => setVisibleRight(false)}
       >
-        <EmployeeSidebar />
+        <EmployeeSidebar onEmployeeAdded={onEmployeeAdded} />
       </Sidebar>
     </div>
   );

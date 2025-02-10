@@ -4,7 +4,7 @@ import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
 
-export default function EmployeeSidebar() {
+export default function EmployeeSidebar({ onEmployeeAdded }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -35,7 +35,7 @@ export default function EmployeeSidebar() {
     existingEmployees.push(newEmployee);
     localStorage.setItem("employees", JSON.stringify(existingEmployees));
 
-    // Reset fields after saving
+    // Reset fields
     setFirstName("");
     setLastName("");
     setEmail("");
@@ -43,6 +43,10 @@ export default function EmployeeSidebar() {
     setQualification("");
     setSelectedDesignation(null);
     setDateOfBirth(null);
+
+    if (onEmployeeAdded) {
+      onEmployeeAdded();
+    }
   };
 
   return (
