@@ -59,7 +59,7 @@ export default function Key() {
   const calculateValidity = (purchasedDate) => {
     const date = new Date(purchasedDate);
     date.setDate(date.getDate() + 90);
-    return date.toISOString().split("T")[0]; // Format as YYYY-MM-DD
+    return date.toISOString().split("T")[0];
   };
 
   useEffect(() => {

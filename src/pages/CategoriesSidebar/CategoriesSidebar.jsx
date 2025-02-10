@@ -7,7 +7,6 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 
 export default function CategoriesSidebar() {
-  const [customers, setCustomers] = useState([]);
   const [showInputSection, setShowInputSection] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState(null);
@@ -69,16 +68,6 @@ export default function CategoriesSidebar() {
     ...(categories || []),
     { name: "Add New Category", id: "add_new" },
   ];
-
-  useEffect(() => {
-    const data = [
-      { id: 1000, subCategory: "James Butt", category: "Testing" },
-      { id: 1001, subCategory: "Josephine Darakjy", category: "Testing" },
-      { id: 1002, subCategory: "Art Venere", category: "Testing" },
-      { id: 1003, subCategory: "Lenna Paprocki", category: "Testing2" },
-    ];
-    setCustomers(data);
-  }, []);
 
   const representativeBodyTemplate = (rowData) => {
     return (

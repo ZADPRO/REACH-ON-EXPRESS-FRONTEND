@@ -8,6 +8,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import "./Header.css";
 import {
   Cog,
+  FileCheck,
   FileText,
   LayoutGrid,
   LogOut,
@@ -43,6 +44,11 @@ const routes = [
     path: "/tracking",
     name: "Tracking",
     icon: <Truck />,
+  },
+  {
+    path: "/report",
+    name: "Report",
+    icon: <FileCheck />,
   },
   {
     path: "/settings",

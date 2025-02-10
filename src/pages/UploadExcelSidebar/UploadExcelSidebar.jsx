@@ -13,6 +13,7 @@ import sampleExcel from "../../assets/excel/sample.xlsx";
 export default function UploadExcelSidebar() {
   const [checked, setChecked] = useState(false);
   const [uploadedData, setUploadedData] = useState(null);
+  const [isDuplicateFound, setIsDuplicateFound] = useState(false);
   const toast = useRef(null);
 
   const leftToolbarTemplate = () => (
@@ -42,6 +43,24 @@ export default function UploadExcelSidebar() {
     return excelDate;
   };
 
+  const checkRequiredColumns = (data) => {
+    const requiredColumns = ["vendorLeaf", "vendor", "purchasedDate"];
+    const headers = data[0] ? Object.keys(data[0]) : [];
+
+    for (let col of requiredColumns) {
+      if (!headers.includes(col)) {
+        toast.current.show({
+          severity: "error",
+          summary: "Missing Columns",
+          detail: `The column "${col}" is missing from the Excel file.`,
+          life: 3000,
+        });
+        return false;
+      }
+    }
+    return true;
+  };
+
   const onUploadHandler = (event) => {
     const file = event.files[0];
     const reader = new FileReader();
@@ -53,6 +72,9 @@ export default function UploadExcelSidebar() {
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
         let jsonData = XLSX.utils.sheet_to_json(worksheet, { raw: false });
 
+        // Check for required columns
+        if (!checkRequiredColumns(jsonData)) return;
+
         jsonData = jsonData.map((row) => {
           if (row["Purchased Date"]) {
             row["Purchased Date"] = formatExcelDate(row["Purchased Date"]);
@@ -62,6 +84,7 @@ export default function UploadExcelSidebar() {
 
         const leafIdSet = new Map();
         const vendorIdSet = new Map();
+        let duplicateFound = false;
 
         jsonData.forEach((row, index) => {
           const leafId = row["leafId"];
@@ -72,6 +95,7 @@ export default function UploadExcelSidebar() {
               const prevIndex = leafIdSet.get(leafId);
               jsonData[prevIndex].duplicate = true;
               row.duplicate = true;
+              duplicateFound = true;
             }
             leafIdSet.set(leafId, index);
           }
@@ -81,11 +105,13 @@ export default function UploadExcelSidebar() {
               const prevIndex = vendorIdSet.get(vendorId);
               jsonData[prevIndex].duplicate = true;
               row.duplicate = true;
+              duplicateFound = true;
             }
             vendorIdSet.set(vendorId, index);
           }
         });
 
+        setIsDuplicateFound(duplicateFound);
         setUploadedData(jsonData);
       } catch (error) {
         console.log("error", error);
@@ -107,6 +133,7 @@ export default function UploadExcelSidebar() {
 
   const resetUpload = () => {
     setUploadedData(null);
+    setIsDuplicateFound(false);
   };
 
   const uploadToConsole = () => {
@@ -176,7 +203,7 @@ export default function UploadExcelSidebar() {
           </div>
           <FileUpload
             name="demo"
-            disabled={!checked}
+            disabled={!checked || isDuplicateFound}
             url={"/api/upload"}
             accept=".xls,.xlsx,.csv"
             maxFileSize={1000000}
@@ -222,6 +249,7 @@ export default function UploadExcelSidebar() {
               icon="pi pi-cloud-upload"
               className="p-button-success ml-2"
               onClick={uploadToConsole}
+              disabled={isDuplicateFound} // Disable upload if duplicates are found
             />
           </div>
         </div>

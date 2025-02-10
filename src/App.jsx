@@ -16,6 +16,7 @@ import Settings from "./components/06-Settings/Settings";
 import Profile from "./components/07-Profile/Profile";
 import Login from "./components/08-Login/Login";
 import Booking from "./components/09-Booking/Booking";
+import Report from "./components/10-Report/Report";
 
 import "./App.css";
 
@@ -31,6 +32,7 @@ function App() {
           <Route path="/tracking" element={<Tracking />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/report" element={<Report />} />
           <Route path="/login" element={<Login />} />
         </Routes>
       </ConditionalHeader>
