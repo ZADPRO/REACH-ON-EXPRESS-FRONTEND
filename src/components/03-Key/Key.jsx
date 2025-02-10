@@ -157,9 +157,9 @@ export default function Key() {
             options={vendors}
             optionLabel="name"
             filter
+            className="flex-1"
             placeholder="Partners"
             maxSelectedLabels={3}
-            className="w-full md:w-14rem"
           />
           <MultiSelect
             value={selectedState}
@@ -167,28 +167,28 @@ export default function Key() {
             options={state}
             optionLabel="name"
             filter
+            className="flex-1"
             placeholder="Status"
             maxSelectedLabels={3}
-            className="w-full md:w-14rem"
           />
           <Calendar
             value={dates}
             onChange={(e) => setDates(e.value)}
             selectionMode="multiple"
             readOnlyInput
+            className="flex-1"
             placeholder="Pick Multiple Dates"
             showButtonBar
-            className="w-full md:w-14rem"
           />
           <Calendar
             value={dates}
             onChange={(e) => setDates(e.value)}
             selectionMode="range"
             readOnlyInput
+            className="flex-1"
             showButtonBar
             placeholder="Pick Date Range"
             hideOnRangeSelection
-            className="w-full md:w-14rem"
           />
         </div>
         <Toolbar

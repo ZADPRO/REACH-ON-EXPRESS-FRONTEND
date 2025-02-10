@@ -10,16 +10,16 @@ export default function CategoriesSidebar() {
   const [customers, setCustomers] = useState([]);
   const [showInputSection, setShowInputSection] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
-  const [categories, setCategories] = useState([
-    { name: "Technology", id: 1 },
-    { name: "Health", id: 2 },
-    { name: "Finance", id: 3 },
-  ]);
+  const [categories, setCategories] = useState(null);
   const [newCategory, setNewCategory] = useState("");
   const [showInput, setShowInput] = useState(false);
 
+  useEffect(() => {
+    const storedCategories = JSON.parse(localStorage.getItem("categories"));
+    setCategories(storedCategories || []);
+  }, []);
+
   const handleDropdownChange = (e) => {
-    console.log("e.value", e.value.id);
     if (e.value.id === "add_new") {
       setShowInput(true);
       setSelectedCategory(null);
@@ -31,71 +31,36 @@ export default function CategoriesSidebar() {
 
   const handleAddCategory = () => {
     if (newCategory.trim()) {
-      console.log("New Category Added:", newCategory);
-      setCategories([
+      const updatedCategories = [
         ...categories,
         { name: newCategory, id: categories.length + 1 },
-      ]);
+      ];
+      setCategories(updatedCategories);
+      localStorage.setItem("categories", JSON.stringify(updatedCategories));
       setNewCategory("");
       setShowInput(false);
     }
   };
 
   const categoryOptions = [
-    ...categories,
+    ...(categories || []),
     { name: "Add New Category", id: "add_new" },
   ];
+
   useEffect(() => {
     const data = [
-      {
-        id: 1000,
-        subCategory: "James Butt",
-        category: "Testing",
-      },
-      {
-        id: 1001,
-        subCategory: "Josephine Darakjy",
-        category: "Testing",
-      },
-      {
-        id: 1002,
-        subCategory: "Art Venere",
-        category: "Testing",
-      },
-      {
-        id: 1003,
-        subCategory: "Lenna Paprocki",
-        category: "Testing2",
-      },
-      {
-        id: 1000,
-        subCategory: "James Butt",
-        category: "Testing",
-      },
-      {
-        id: 1001,
-        subCategory: "Josephine Darakjy",
-        category: "Testing",
-      },
-      {
-        id: 1002,
-        subCategory: "Art Venere",
-        category: "Testing",
-      },
-      {
-        id: 1003,
-        subCategory: "Lenna Paprocki",
-        category: "Testing2",
-      },
+      { id: 1000, subCategory: "James Butt", category: "Testing" },
+      { id: 1001, subCategory: "Josephine Darakjy", category: "Testing" },
+      { id: 1002, subCategory: "Art Venere", category: "Testing" },
+      { id: 1003, subCategory: "Lenna Paprocki", category: "Testing2" },
     ];
-
     setCustomers(data);
   }, []);
 
   const representativeBodyTemplate = (rowData) => {
     return (
       <div className="flex align-items-center gap-2">
-        <span className="">{rowData.category}</span>
+        <span>{rowData.category}</span>
       </div>
     );
   };
@@ -111,7 +76,6 @@ export default function CategoriesSidebar() {
     />
   );
 
-  const addProduct = () => {};
   return (
     <div>
       <h3>Categories Sidebar</h3>
@@ -171,7 +135,7 @@ export default function CategoriesSidebar() {
             </div>
           </div>
           <div className="flex gap-3 align-items-center justify-content-end">
-            <Button label="Add" severity="info" onClick={addProduct} />
+            <Button label="Add" severity="info" />
             <Button
               label="Cancel"
               severity="danger"
