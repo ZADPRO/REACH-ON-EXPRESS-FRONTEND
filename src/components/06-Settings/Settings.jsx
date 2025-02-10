@@ -17,6 +17,7 @@ import { Sidebar } from "primereact/sidebar";
 import { useState } from "react";
 import PartnersSidebar from "../../pages/PartnersSidebar/PartnersSidebar";
 import VendorSidebar from "../../pages/VendorSidebar/VendorSidebar";
+import CategoriesSidebar from "../../pages/CategoriesSidebar/CategoriesSidebar";
 
 const cardsData = [
   { id: 1, title: "Partners", icon: offersIcon },
@@ -62,6 +63,8 @@ export default function Settings() {
         return <PartnersSidebar />;
       case "Vendors":
         return <VendorSidebar />;
+      case "Categories":
+        return <CategoriesSidebar />;
       // case "Payment Methods":
       //   return <PaymentMethodsSidebar />;
       // case "Money Transfer":

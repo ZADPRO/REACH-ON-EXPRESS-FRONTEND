@@ -43,7 +43,7 @@ export default function Key() {
         month: "2-digit",
         year: "2-digit",
       })
-      .replace("/", ""); // Formats as MM-YY
+      .replace("/", "");
     return `R${paddedNumber}${formattedDate}`;
   };
 
@@ -71,14 +71,6 @@ export default function Key() {
         status: state[0].name,
         purchasedDate: "2024-01-20",
         validity: calculateValidity("2024-01-20"),
-      },
-      {
-        id: 2,
-        vendorLeaf: generateRandomVendorLeaf(),
-        vendor: vendors[1].name,
-        status: state[2].name,
-        purchasedDate: "2023-12-15",
-        validity: calculateValidity("2023-12-15"),
       },
     ];
 

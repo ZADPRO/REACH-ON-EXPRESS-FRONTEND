@@ -80,88 +80,91 @@ export default function PriceSidebar() {
         options={partners}
         optionLabel="name"
         placeholder="Select a Partner"
-        className="w-full md:w-14rem"
+        className="w-full md:w-14rem mb-3"
       />
 
-      <Divider />
+      <br />
 
       {selectedPartner && (
-        <div className="flex flex-column gap-2">
-          <div className="flex gap-2">
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <Minimize2 size={17} />
-              </span>
-              <InputText
-                placeholder="Min. Weight"
-                value={minWeight}
-                onChange={(e) => setMinWeight(e.target.value)}
-              />
+        <>
+          <Divider />
+          <div className="flex flex-column gap-2">
+            <div className="flex gap-2">
+              <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">
+                  <Minimize2 size={17} />
+                </span>
+                <InputText
+                  placeholder="Min. Weight"
+                  value={minWeight}
+                  onChange={(e) => setMinWeight(e.target.value)}
+                />
+              </div>
+              <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">
+                  <Maximize2 size={17} />
+                </span>
+                <InputText
+                  placeholder="Max. Weight"
+                  value={maxWeight}
+                  onChange={(e) => setMaxWeight(e.target.value)}
+                />
+              </div>
+              <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">
+                  <IndianRupee size={17} />
+                </span>
+                <InputText
+                  placeholder="Price"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </div>
+              <div className="flex align-items-center">
+                <InputSwitch
+                  checked={checked}
+                  onChange={(e) => setChecked(e.value)}
+                />
+              </div>
             </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <Maximize2 size={17} />
-              </span>
-              <InputText
-                placeholder="Max. Weight"
-                value={maxWeight}
-                onChange={(e) => setMaxWeight(e.target.value)}
-              />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <IndianRupee size={17} />
-              </span>
-              <InputText
-                placeholder="Price"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-            <div className="flex align-items-center">
-              <InputSwitch
-                checked={checked}
-                onChange={(e) => setChecked(e.value)}
-              />
+            <div className="flex gap-2">
+              <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">
+                  <Minimize2 size={17} />
+                </span>
+                <InputText
+                  placeholder="Length"
+                  value={minWeight}
+                  onChange={(e) => setMinWeight(e.target.value)}
+                />
+              </div>
+              <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">
+                  <Maximize2 size={17} />
+                </span>
+                <InputText
+                  placeholder="Breadth"
+                  value={maxWeight}
+                  onChange={(e) => setMaxWeight(e.target.value)}
+                />
+              </div>
+              <div className="p-inputgroup flex-1">
+                <span className="p-inputgroup-addon">
+                  <IndianRupee size={17} />
+                </span>
+                <InputText
+                  placeholder="Height"
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                />
+              </div>
+              <Button label="Add" severity="success" onClick={addProduct} />
             </div>
           </div>
-          <div className="flex gap-2">
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <Minimize2 size={17} />
-              </span>
-              <InputText
-                placeholder="Length"
-                value={minWeight}
-                onChange={(e) => setMinWeight(e.target.value)}
-              />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <Maximize2 size={17} />
-              </span>
-              <InputText
-                placeholder="Breadth"
-                value={maxWeight}
-                onChange={(e) => setMaxWeight(e.target.value)}
-              />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <IndianRupee size={17} />
-              </span>
-              <InputText
-                placeholder="Height"
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              />
-            </div>
-            <Button label="Add" severity="success" onClick={addProduct} />
-          </div>
-        </div>
+          <Divider />
+        </>
       )}
 
-      <Divider />
       <MultiSelect
         value={selectedPartners}
         onChange={(e) => setSelectedPartners(e.value)}

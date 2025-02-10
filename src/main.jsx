@@ -8,7 +8,7 @@ import "primeicons/primeicons.css";
 import { PrimeReactProvider } from "primereact/api";
 import "primeflex/primeflex.css";
 import "primereact/resources/primereact.css";
-import "primereact/resources/themes/lara-light-indigo/theme.css";
+// import "primereact/resources/themes/lara-light-indigo/theme.css";
 
 // import "primereact/resources/themes/bootstrap4-light-blue/theme.css";
 // import "primereact/resources/themes/bootstrap4-light-purple/theme.css";
@@ -28,6 +28,8 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 
 // DEEP PURPLE
 // import "primereact/resources/themes/mdc-dark-deeppurple/theme.css";
+
+// TAILWIND LIGHT NOTED - V1
 // import "primereact/resources/themes/tailwind-light/theme.css";
 
 // LIGHT
@@ -42,13 +44,17 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 // import "primereact/resources/themes/lara-dark-indigo/theme.css";
 // import "primereact/resources/themes/lara-dark-purple/theme.css";
 // import "primereact/resources/themes/lara-dark-teal/theme.css";
+
+// SOHO LIGHT - V1
 // import "primereact/resources/themes/soho-light/theme.css";
 // import "primereact/resources/themes/soho-dark/theme.css";
 // import "primereact/resources/themes/viva-light/theme.css";
 // import "primereact/resources/themes/viva-dark/theme.css";
 // import "primereact/resources/themes/mira/theme.css";
 // import "primereact/resources/themes/nano/theme.css";
-// import "primereact/resources/themes/saga-blue/theme.css";
+
+// SAGA BLUE - V1
+import "primereact/resources/themes/saga-blue/theme.css";
 // import "primereact/resources/themes/saga-green/theme.css";
 // import "primereact/resources/themes/saga-orange/theme.css";
 // import "primereact/resources/themes/saga-purple/theme.css";
