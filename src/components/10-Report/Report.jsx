@@ -2,10 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Toast } from "primereact/toast";
+import { Dropdown } from "primereact/dropdown";
+import { Calendar } from "primereact/calendar";
+import { Button } from "primereact/button";
 
 export default function Report() {
   const [products, setProducts] = useState([]);
   const [expandedRows, setExpandedRows] = useState(null);
+  const [selectedVendors, setSelectedVendors] = useState(null);
+  const [date, setDate] = useState(null);
+
+  const vendors = JSON.parse(localStorage.getItem("vendors"));
+  console.log("vendorsData", vendors);
   const toast = useRef(null);
 
   useEffect(() => {
@@ -243,6 +251,32 @@ export default function Report() {
         </div>
       </div>
       <div className="m-3">
+        <div className="flex mt-3 mb-3 gap-3">
+          <Dropdown
+            value={selectedVendors}
+            onChange={(e) => setSelectedVendors(e.value)}
+            options={vendors}
+            optionLabel="name"
+            style={{ maxWidth: "14rem" }}
+            filter
+            className="flex-1"
+            placeholder="Partners"
+            maxSelectedLabels={3}
+          />
+          <Calendar
+            value={date}
+            onChange={(e) => setDate(e.value)}
+            placeholder="Pick Start Month"
+            style={{ maxWidth: "14rem" }}
+          />
+          <Calendar
+            value={date}
+            onChange={(e) => setDate(e.value)}
+            placeholder="Pick End Date"
+            style={{ maxWidth: "14rem" }}
+          />
+          <Button label="Generate Report" severity="info" />
+        </div>
         <Toast ref={toast} />
         <DataTable
           value={products}
@@ -252,7 +286,6 @@ export default function Report() {
           onRowCollapse={onRowCollapse}
           showGridlines
           scrollable
-          scrollHeight="500px"
           stripedRows
           className="reportDatatable"
           rowExpansionTemplate={rowExpansionTemplate}
@@ -292,6 +325,7 @@ export default function Report() {
             style={{ maxWidth: "3rem" }}
           />
           <Column field="amount" header="Amount" style={{ maxWidth: "3rem" }} />
+          <Column field="amount" header="Edit" style={{ maxWidth: "3rem" }} />
         </DataTable>
       </div>
     </div>
