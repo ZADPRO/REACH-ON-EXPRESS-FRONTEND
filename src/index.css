@@ -36,6 +36,10 @@ p {
   padding: 1rem 1rem;
 }
 
+.reportDatatable .p-datatable-tbody > tr > td {
+  padding: 10px 1rem;
+}
+
 .primaryNav p {
   font-weight: bold;
   font-size: 17px;

@@ -9,11 +9,6 @@ import PriceSidebar from "../../pages/PriceSidebar/PriceSidebar";
 
 import { Sidebar } from "primereact/sidebar";
 
-// import OffersSidebar from "../../Pages/OffersSidebar/OffersSidebar";
-// import FoodCategorySidebar from "../../Pages/FoodCategorySidebar/FoodCategorySidebar";
-// import RestroDocSidebar from "../../Pages/RestroDocSidebar/RestroDocSidebar";
-// import PaymentMethodsSidebar from "../../Pages/PaymentMethodsSidebar/PaymentMethodsSidebar";
-// import MoneyTransferSidebar from "../../Pages/MoneyTransferSidebar/MoneyTransferSidebar";
 import { useState } from "react";
 import PartnersSidebar from "../../pages/PartnersSidebar/PartnersSidebar";
 import VendorSidebar from "../../pages/VendorSidebar/VendorSidebar";
@@ -21,7 +16,7 @@ import CategoriesSidebar from "../../pages/CategoriesSidebar/CategoriesSidebar";
 
 const cardsData = [
   { id: 1, title: "Partners", icon: offersIcon },
-  { id: 2, title: "Vendors", icon: offersIcon },
+  { id: 2, title: "Customers", icon: offersIcon },
   { id: 3, title: "Price", icon: offersIcon },
   { id: 4, title: "Categories", icon: offersIcon },
   { id: 5, title: "Parcel Booking", icon: offersIcon },
@@ -61,7 +56,7 @@ export default function Settings() {
         return <PriceSidebar />;
       case "Partners":
         return <PartnersSidebar />;
-      case "Vendors":
+      case "Customers":
         return <VendorSidebar />;
       case "Categories":
         return <CategoriesSidebar />;

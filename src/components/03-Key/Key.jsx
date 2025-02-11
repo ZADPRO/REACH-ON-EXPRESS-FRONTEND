@@ -47,32 +47,8 @@ export default function Key() {
     return `R${paddedNumber}${formattedDate}`;
   };
 
-  const generateRandomVendorLeaf = () => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let result = "";
-    for (let i = 0; i < 12; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
-  };
-
-  const calculateValidity = (purchasedDate) => {
-    const date = new Date(purchasedDate);
-    date.setDate(date.getDate() + 90);
-    return date.toISOString().split("T")[0];
-  };
-
   useEffect(() => {
-    const data = [
-      {
-        id: 1,
-        vendorLeaf: generateRandomVendorLeaf(),
-        vendor: vendors[0].name,
-        status: state[0].name,
-        purchasedDate: "2024-01-20",
-        validity: calculateValidity("2024-01-20"),
-      },
-    ];
+    const data = JSON.parse(localStorage.getItem("uploadedExcel"));
 
     setCustomers(data);
   }, []);
@@ -217,20 +193,14 @@ export default function Key() {
             body={(rowData, { rowIndex }) => rowIndex + 1}
           ></Column>
           <Column
-            field="trackingId"
-            header="Tracking ID"
-            frozen
-            style={{ minWidth: "10rem" }}
-          ></Column>
-          <Column
             field="vendorLeaf"
-            header="Vendor Leaf"
+            header="Leaf"
             frozen
             style={{ minWidth: "10rem" }}
           ></Column>
           <Column
             field="vendor"
-            header="Vendor"
+            header="Partners"
             style={{ minWidth: "12rem" }}
           ></Column>
           <Column

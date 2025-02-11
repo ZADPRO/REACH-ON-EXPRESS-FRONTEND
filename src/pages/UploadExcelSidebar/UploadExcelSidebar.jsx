@@ -249,7 +249,7 @@ export default function UploadExcelSidebar() {
               icon="pi pi-cloud-upload"
               className="p-button-success ml-2"
               onClick={uploadToConsole}
-              disabled={isDuplicateFound} // Disable upload if duplicates are found
+              disabled={isDuplicateFound}
             />
           </div>
         </div>
