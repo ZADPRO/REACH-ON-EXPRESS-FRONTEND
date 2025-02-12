@@ -19,6 +19,7 @@ import Booking from "./components/09-Booking/Booking";
 import Report from "./components/10-Report/Report";
 
 import "./App.css";
+import TestingPDF from "./components/11-TestingPDF/TestingPDF";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/report" element={<Report />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/testingPDF" element={<TestingPDF />} />
         </Routes>
       </ConditionalHeader>
     </Router>
@@ -43,7 +45,7 @@ function App() {
 function ConditionalHeader({ children }) {
   const location = useLocation();
 
-  const excludedRoutes = ["/login"];
+  const excludedRoutes = ["/login", "/testingPDF"];
   const isExcluded = excludedRoutes.includes(location.pathname);
 
   return isExcluded ? children : <Header>{children}</Header>;

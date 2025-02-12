@@ -5,6 +5,7 @@ import { TabView, TabPanel } from "primereact/tabview";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputSwitch } from "primereact/inputswitch";
+import { Button } from "primereact/button";
 
 export default function Booking() {
   const [partners, setPartners] = useState(null);
@@ -214,6 +215,9 @@ export default function Booking() {
                   <InputText placeholder="Charged Weight" disabled={!checked} />
                 </div>
               </div>
+            </div>
+            <div style={{ marginTop: "20px" }}>
+              <Button>DOWNLOAD</Button>
             </div>
           </TabPanel>
           <TabPanel header="Previous Transactions"></TabPanel>
