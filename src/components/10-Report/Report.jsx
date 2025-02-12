@@ -10,9 +10,10 @@ export default function Report() {
   const [products, setProducts] = useState([]);
   const [expandedRows, setExpandedRows] = useState(null);
   const [selectedVendors, setSelectedVendors] = useState(null);
-  const [date, setDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
 
-  const vendors = JSON.parse(localStorage.getItem("vendors"));
+  const vendors = JSON.parse(localStorage.getItem("vendors")) || [];
   console.log("vendorsData", vendors);
   const toast = useRef(null);
 
@@ -264,16 +265,14 @@ export default function Report() {
             maxSelectedLabels={3}
           />
           <Calendar
-            value={date}
-            onChange={(e) => setDate(e.value)}
+            value={startDate}
+            onChange={(e) => setStartDate(e.value)}
             placeholder="Pick Start Month"
-            style={{ maxWidth: "14rem" }}
           />
           <Calendar
-            value={date}
-            onChange={(e) => setDate(e.value)}
+            value={endDate}
+            onChange={(e) => setEndDate(e.value)}
             placeholder="Pick End Date"
-            style={{ maxWidth: "14rem" }}
           />
           <Button label="Generate Report" severity="info" />
         </div>
@@ -306,8 +305,9 @@ export default function Report() {
           <Column
             field="pod"
             header="POD Number"
-            style={{ maxWidth: "3rem" }}
+            style={{ maxWidth: "5rem" }}
           />
+          <Column field="leaf" header="Leaf" style={{ maxWidth: "3rem" }} />
           <Column
             field="destination"
             header="Destination"

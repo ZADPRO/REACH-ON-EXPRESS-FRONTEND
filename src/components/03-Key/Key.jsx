@@ -48,7 +48,7 @@ export default function Key() {
   };
 
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("uploadedExcel"));
+    const data = JSON.parse(localStorage.getItem("uploadedExcel")) || [];
 
     setCustomers(data);
   }, []);

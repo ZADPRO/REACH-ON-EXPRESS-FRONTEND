@@ -17,22 +17,24 @@ export default function PriceSidebar() {
   const [maxWeight, setMaxWeight] = useState("");
   const [price, setPrice] = useState("");
   const [checked, setChecked] = useState(false);
+  const [length, setLength] = useState("");
+  const [breadth, setBreadth] = useState("");
+  const [height, setHeight] = useState("");
   const [selectedPartners, setSelectedPartners] = useState([]);
 
   useEffect(() => {
-    const storedPartners = JSON.parse(localStorage.getItem("partners")) || [];
-    setPartners(storedPartners);
-  }, []);
-
-  useEffect(() => {
-    const storedProducts =
-      JSON.parse(localStorage.getItem("pricingDetails")) || [];
-    setProducts(storedProducts);
+    setPartners(JSON.parse(localStorage.getItem("partners")) || []);
+    setProducts(JSON.parse(localStorage.getItem("pricingDetails")) || []);
   }, []);
 
   const addProduct = () => {
     if (!selectedPartner || !minWeight || !maxWeight || !price) {
       alert("Please fill all the fields!");
+      return;
+    }
+
+    if (checked && (!length || !breadth || !height)) {
+      alert("Please fill Length, Breadth, and Height if toggle is enabled!");
       return;
     }
 
@@ -42,6 +44,9 @@ export default function PriceSidebar() {
       minWeight,
       maxWeight,
       price,
+      length: checked ? length : "-",
+      breadth: checked ? breadth : "-",
+      height: checked ? height : "-",
     };
 
     const updatedProducts = [...products, newProduct];
@@ -51,18 +56,10 @@ export default function PriceSidebar() {
     setMinWeight("");
     setMaxWeight("");
     setPrice("");
+    setLength("");
+    setBreadth("");
+    setHeight("");
   };
-
-  const quantityTemplate = (rowData) => (
-    <Button
-      rounded
-      outlined
-      text
-      severity="info"
-      icon="pi pi-pencil"
-      onClick={() => console.log("Edit quantity for", rowData.id)}
-    />
-  );
 
   const filteredProducts = selectedPartners.length
     ? products.filter((p) =>
@@ -73,7 +70,6 @@ export default function PriceSidebar() {
   return (
     <div className="m-4">
       <h3>Pricing</h3>
-
       <Dropdown
         value={selectedPartner}
         onChange={(e) => setSelectedPartner(e.value)}
@@ -82,9 +78,7 @@ export default function PriceSidebar() {
         placeholder="Select a Partner"
         className="w-full md:w-14rem mb-3"
       />
-
       <br />
-
       {selectedPartner && (
         <>
           <Divider />
@@ -92,7 +86,7 @@ export default function PriceSidebar() {
             <div className="flex gap-2">
               <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
-                  <Minimize2 size={17} />
+                  <Minimize2 size={16} />
                 </span>
                 <InputText
                   placeholder="Min. Weight"
@@ -102,7 +96,7 @@ export default function PriceSidebar() {
               </div>
               <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
-                  <Maximize2 size={17} />
+                  <Maximize2 size={16} />
                 </span>
                 <InputText
                   placeholder="Max. Weight"
@@ -112,7 +106,7 @@ export default function PriceSidebar() {
               </div>
               <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
-                  <IndianRupee size={17} />
+                  <IndianRupee size={16} />
                 </span>
                 <InputText
                   placeholder="Price"
@@ -120,42 +114,43 @@ export default function PriceSidebar() {
                   onChange={(e) => setPrice(e.target.value)}
                 />
               </div>
-              <div className="flex align-items-center">
-                <InputSwitch
-                  checked={checked}
-                  onChange={(e) => setChecked(e.value)}
-                />
-              </div>
+              <InputSwitch
+                checked={checked}
+                onChange={(e) => setChecked(e.value)}
+              />
             </div>
             <div className="flex gap-2">
               <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
-                  <Minimize2 size={17} />
+                  <i className="pi pi-user"></i>
                 </span>
                 <InputText
                   placeholder="Length"
-                  value={minWeight}
-                  onChange={(e) => setMinWeight(e.target.value)}
+                  value={length}
+                  onChange={(e) => setLength(e.target.value)}
+                  disabled={!checked}
                 />
               </div>
               <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
-                  <Maximize2 size={17} />
+                  <i className="pi pi-user"></i>
                 </span>
                 <InputText
                   placeholder="Breadth"
-                  value={maxWeight}
-                  onChange={(e) => setMaxWeight(e.target.value)}
+                  value={breadth}
+                  onChange={(e) => setBreadth(e.target.value)}
+                  disabled={!checked}
                 />
               </div>
               <div className="p-inputgroup flex-1">
                 <span className="p-inputgroup-addon">
-                  <IndianRupee size={17} />
+                  <i className="pi pi-user"></i>
                 </span>
                 <InputText
                   placeholder="Height"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
+                  value={height}
+                  onChange={(e) => setHeight(e.target.value)}
+                  disabled={!checked}
                 />
               </div>
               <Button label="Add" severity="success" onClick={addProduct} />
@@ -164,7 +159,6 @@ export default function PriceSidebar() {
           <Divider />
         </>
       )}
-
       <MultiSelect
         value={selectedPartners}
         onChange={(e) => setSelectedPartners(e.value)}
@@ -175,7 +169,6 @@ export default function PriceSidebar() {
         maxSelectedLabels={3}
         className="w-full md:w-14rem"
       />
-
       <DataTable
         scrollable
         stripedRows
@@ -188,12 +181,9 @@ export default function PriceSidebar() {
         <Column field="minWeight" header="Min." style={{ width: "5rem" }} />
         <Column field="maxWeight" header="Max." style={{ width: "5rem" }} />
         <Column field="price" header="Price" style={{ width: "5rem" }} />
-        <Column
-          field="edit"
-          header="Actions"
-          style={{ width: "4rem" }}
-          body={quantityTemplate}
-        />
+        <Column field="length" header="Length" style={{ width: "5rem" }} />
+        <Column field="breadth" header="Breadth" style={{ width: "5rem" }} />
+        <Column field="height" header="Height" style={{ width: "5rem" }} />
       </DataTable>
     </div>
   );
