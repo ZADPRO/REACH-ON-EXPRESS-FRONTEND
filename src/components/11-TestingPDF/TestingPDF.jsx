@@ -13,7 +13,7 @@ import PopBold from "../../assets/Fonts/Poppins-Bold.ttf";
 import PopBoldItalic from "../../assets/Fonts/Poppins-BoldItalic.ttf";
 import PopSemiboldItalic from "../../assets/Fonts/Poppins-SemiBoldItalic.ttf";
 import logo from "../../assets/Logo/LOGO.png";
-import barcode from "../../assets/PDFTemplate/barcode.png"
+import barcode from "../../assets/PDFTemplate/Barcode.png"
 import cut from "../../assets/PDFTemplate/cut.png"
 
 const TestingPDF = () => {
