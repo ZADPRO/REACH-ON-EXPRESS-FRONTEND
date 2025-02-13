@@ -14,7 +14,7 @@ import PopBoldItalic from "../../assets/Fonts/Poppins-BoldItalic.ttf";
 import PopSemiboldItalic from "../../assets/Fonts/Poppins-SemiBoldItalic.ttf";
 import logo from "../../assets/Logo/LOGO.png";
 import barcode from "../../assets/PDFTemplate/Barcode.png"
-import cut from "../../assets/PDFTemplate/cut.png"
+import cut from "../../assets/PDFTemplate/Cut.png"
 
 const TestingPDF = () => {
   Font.register({ family: "PopRegular", src: PopRegular });
