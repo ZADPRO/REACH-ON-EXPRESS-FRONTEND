@@ -10,6 +10,12 @@ import { Button } from "primereact/button";
 export default function Booking() {
   const [partners, setPartners] = useState(null);
   const [value, setValue] = useState("");
+  const [parcelType, setParcelType] = useState(null);
+
+  const parcels = [
+    { name: "Non-Document", code: 1 },
+    { name: "Document", code: 2 },
+  ];
 
   const vendors = JSON.parse(localStorage.getItem("partners"));
   console.log("vendorsData", vendors);
@@ -43,10 +49,10 @@ export default function Booking() {
 
                 <FloatLabel>
                   <Dropdown
-                    value={partners}
+                    value={parcelType}
                     inputId="docType"
-                    onChange={(e) => setPartners(e.value)}
-                    options={vendors}
+                    onChange={(e) => setParcelType(e.value)}
+                    options={parcels}
                     optionLabel="name"
                     className="w-full md:w-14rem"
                     checkmark={true}
@@ -54,7 +60,10 @@ export default function Booking() {
                   />
                   <label htmlFor="docType">Type</label>
                 </FloatLabel>
-
+                <InputSwitch
+                  checked={checked}
+                  onChange={(e) => setChecked(e.value)}
+                />
                 <p className="flex align-items-center">
                   <b>Origin : </b> Erode
                 </p>
