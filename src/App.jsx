@@ -20,6 +20,7 @@ import Report from "./components/10-Report/Report";
 
 import "./App.css";
 import TestingPDF from "./components/11-TestingPDF/TestingPDF";
+import ReportPDF from "./components/12-ReportPDF/ReportPDF";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
           <Route path="/report" element={<Report />} />
           <Route path="/login" element={<Login />} />
           <Route path="/testingPDF" element={<TestingPDF />} />
+          <Route path="/reportPDF" element={<ReportPDF />} />
         </Routes>
       </ConditionalHeader>
     </Router>
