@@ -3,32 +3,82 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import { InputText } from "primereact/inputtext";
+import axios from "axios";
+import decrypt from "../../helper";
 
 export default function PartnersSidebar() {
-  const [products, setProducts] = useState([]);
+  const [partnerDetails, setPartnerDetails] = useState([]);
   const [showInputSection, setShowInputSection] = useState(false);
   const [partners, setPartners] = useState("");
   const [contactDetails, setContactDetails] = useState("");
   const [validity, setValidity] = useState("");
 
   useEffect(() => {
+    getPartners();
     const storedProducts = JSON.parse(localStorage.getItem("partners")) || [];
-    setProducts(storedProducts);
+    setPartnerDetails(storedProducts);
   }, []);
+
+  const getPartners = () => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getPartner", {
+        headers: {
+          Authorization: localStorage.getItem("JWTtoken"),
+        },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data", data);
+        setPartnerDetails(data.partners);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  };
 
   const addProduct = () => {
     if (partners.trim()) {
       const newProducts = [
-        ...products,
+        ...partnerDetails,
         {
-          id: products.length + 1,
+          id: partnerDetails.length + 1,
           name: partners,
           contact: contactDetails,
           validity: validity,
         },
       ];
-      setProducts(newProducts);
-      localStorage.setItem("partners", JSON.stringify(newProducts));
+      setPartnerDetails(newProducts);
+      // localStorage.setItem("partners", JSON.stringify(newProducts));
+      try {
+        const response = axios.post(
+          import.meta.env.VITE_API_URL + "/Routes/addPartners",
+          {
+            partnersName: partners,
+            validityDate: validity,
+            mobileNumber: contactDetails,
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem("JWTtoken"),
+            },
+          }
+        );
+
+        const data = decrypt(
+          response.data[1],
+          response.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+
+        localStorage.setItem("JWTtoken", "Bearer " + data.token);
+        getPartners();
+      } catch (error) {
+        console.error(error);
+      }
       setPartners("");
       setContactDetails("");
       setValidity("");
@@ -108,7 +158,7 @@ export default function PartnersSidebar() {
         scrollable
         stripedRows
         className="partnersVendorId"
-        value={products}
+        value={partnerDetails}
         header={header}
         showGridlines
       >
@@ -117,8 +167,8 @@ export default function PartnersSidebar() {
           header="S.No"
           body={(_, rowIndex) => rowIndex.rowIndex + 1}
         ></Column>
-        <Column field="name" header="Partners"></Column>
-        <Column field="contact" header="Contact"></Column>
+        <Column field="partnersName" header="Partners"></Column>
+        <Column field="phoneNumber" header="Contact"></Column>
         <Column field="validity" header="Validity"></Column>
         <Column field="edit" header="Actions" body={quantityTemplate}></Column>
       </DataTable>

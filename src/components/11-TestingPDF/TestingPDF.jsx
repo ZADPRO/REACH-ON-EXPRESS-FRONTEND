@@ -13,8 +13,8 @@ import PopBold from "../../assets/Fonts/Poppins-Bold.ttf";
 import PopBoldItalic from "../../assets/Fonts/Poppins-BoldItalic.ttf";
 import PopSemiboldItalic from "../../assets/Fonts/Poppins-SemiBoldItalic.ttf";
 import logo from "../../assets/Logo/LOGO.png";
-import barcode from "../../assets/PDFTemplate/Barcode.png"
-import cut from "../../assets/PDFTemplate/Cut.png"
+import barcode from "../../assets/PDFTemplate/Barcode.png";
+import cut from "../../assets/PDFTemplate/Cut.png";
 
 const TestingPDF = () => {
   Font.register({ family: "PopRegular", src: PopRegular });
@@ -27,7 +27,15 @@ const TestingPDF = () => {
       <PDFViewer style={{ width: "100%", height: "100vh" }}>
         <Document>
           <Page size="A4">
-            <View style={{ padding: 20, display: "flex", justifyContent: "center", alignItems: 'center', height: "100%" }}>
+            <View
+              style={{
+                padding: 20,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "100%",
+              }}
+            >
               {/* Row-1 */}
               <View
                 style={{
@@ -357,10 +365,12 @@ const TestingPDF = () => {
                   borderLeft: "1px solid #000",
                 }}
               >
-                <View style={{
-                  width: "25%",
-                  height: "120px"
-                }}>
+                <View
+                  style={{
+                    width: "25%",
+                    height: "120px",
+                  }}
+                >
                   <View
                     style={{
                       width: "100%",
@@ -403,26 +413,46 @@ const TestingPDF = () => {
                     </View>
                   </View>
 
-                  <View style={{
-                    width: "100%",
-                    height: "80px",
-                    borderRight: "1px solid #000",
-                    borderBottom: "1px solid #000",
-                    fontSize: "5px",
-                    fontFamily: "PopRegular",
-                    textAlign: "justify",
-                    padding: "5px 5px",
-                  }}>
-                    <Text style={{ textAlign: "justify" }}>I/We declare that this consignment does not contain personal mail, cash, jewellery, contraband, illegal drugs, any prohibited items and commodities which can cause safety hazards while transporting</Text>
-                    <Text style={{ textAlign: "center", marginTop: "10px", fontFamily: "PopBold", textDecoration: "underline" }}>Sende's Signature & Seal</Text>
-                    <Text style={{ textAlign: "justify", marginTop: "2px" }}>I have read and understood terms & conditions ofcarriage mentioned on website www.dtdc.in, and I agree to the Same.</Text>
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "80px",
+                      borderRight: "1px solid #000",
+                      borderBottom: "1px solid #000",
+                      fontSize: "5px",
+                      fontFamily: "PopRegular",
+                      textAlign: "justify",
+                      padding: "5px 5px",
+                    }}
+                  >
+                    <Text style={{ textAlign: "justify" }}>
+                      I/We declare that this consignment does not contain
+                      personal mail, cash, jewellery, contraband, illegal drugs,
+                      any prohibited items and commodities which can cause
+                      safety hazards while transporting
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        marginTop: "10px",
+                        fontFamily: "PopBold",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Sende's Signature & Seal
+                    </Text>
+                    <Text style={{ textAlign: "justify", marginTop: "2px" }}>
+                      I have read and understood terms & conditions ofcarriage
+                      mentioned on website www.dtdc.in, and I agree to the Same.
+                    </Text>
                   </View>
                 </View>
                 <View
                   style={{
                     width: "25%",
-                    height: "120px"
-                  }}>
+                    height: "120px",
+                  }}
+                >
                   <View
                     style={{
                       width: "100%",
@@ -448,9 +478,7 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Declared Value:
-                      </Text>
+                      <Text>Declared Value:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>30000</Text>
                     </View>
                     <View
@@ -467,9 +495,7 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        No Of Pieces:
-                      </Text>
+                      <Text>No Of Pieces:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>1</Text>
                     </View>
                     <View
@@ -485,9 +511,7 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Actual Weight:
-                      </Text>
+                      <Text>Actual Weight:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>16.215 Kgs</Text>
                     </View>
                   </View>
@@ -502,7 +526,6 @@ const TestingPDF = () => {
                       fontSize: "8px",
                     }}
                   >
-
                     <View
                       style={{
                         width: "100%",
@@ -517,10 +540,10 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Dim:
+                      <Text>Dim:</Text>
+                      <Text style={{ fontFamily: "PopBold" }}>
+                        1 cm X 1 cm X 1 cm
                       </Text>
-                      <Text style={{ fontFamily: "PopBold" }}>1 cm X 1 cm X 1 cm</Text>
                     </View>
 
                     <View
@@ -536,13 +559,9 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Charged weight:
-                      </Text>
+                      <Text>Charged weight:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>16.215 Kgs</Text>
                     </View>
-
-
                   </View>
                   <View
                     style={{
@@ -568,10 +587,8 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text style={{ fontFamily: "PopBold" }}>
-                        Name:
-                      </Text>
-                      <Text >SELLAPADI</Text>
+                      <Text style={{ fontFamily: "PopBold" }}>Name:</Text>
+                      <Text>SELLAPADI</Text>
                     </View>
                     <View
                       style={{
@@ -584,10 +601,13 @@ const TestingPDF = () => {
                         // gap: "3px",
                       }}
                     >
-                      <Text style={{ width: "18%", fontFamily: "PopBold", }}>
+                      <Text style={{ width: "18%", fontFamily: "PopBold" }}>
                         Address:
                       </Text>
-                      <Text style={{ width: "75%", }}>Navaladiyar Complex, 26/aarthi Theater Road, VMRP,-,DGL,636307</Text>
+                      <Text style={{ width: "75%" }}>
+                        Navaladiyar Complex, 26/aarthi Theater Road,
+                        VMRP,-,DGL,636307
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -600,17 +620,17 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text style={{ fontFamily: "PopBold" }}>
-                        Phone:
-                      </Text>
-                      <Text >7598057298</Text>
+                      <Text style={{ fontFamily: "PopBold" }}>Phone:</Text>
+                      <Text>7598057298</Text>
                     </View>
                   </View>
                 </View>
-                <View style={{
-                  width: "50%",
-                  height: "120px"
-                }}>
+                <View
+                  style={{
+                    width: "50%",
+                    height: "120px",
+                  }}
+                >
                   <View
                     style={{
                       width: "100%",
@@ -634,7 +654,7 @@ const TestingPDF = () => {
                         // alignItems: "ceter",
                         flexDirection: "row",
                         gap: "3px",
-                        paddingTop: "5px"
+                        paddingTop: "5px",
                       }}
                     >
                       <Text style={{ marginTop: "1px" }}>AWB No:</Text>
@@ -653,73 +673,116 @@ const TestingPDF = () => {
                       fontSize: "8px",
                     }}
                   >
-
-                    <View style={{
-                      width: "50%",
-                      height: "60px",
-                      display: "flex",
-                      flexDirection: "column",
-                      borderRight: "1px solid #000",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "8px",
-                    }}>
-                      <Text style={{ fontSize: "10px", fontFamily: "PopBold" }}>Risk Surcharge</Text>
+                    <View
+                      style={{
+                        width: "50%",
+                        height: "60px",
+                        display: "flex",
+                        flexDirection: "column",
+                        borderRight: "1px solid #000",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "8px",
+                      }}
+                    >
+                      <Text style={{ fontSize: "10px", fontFamily: "PopBold" }}>
+                        Risk Surcharge
+                      </Text>
                     </View>
 
-
-                    <View style={{
-                      width: "50%",
-                      height: "60px",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "8px",
-                    }}>
+                    <View
+                      style={{
+                        width: "50%",
+                        height: "60px",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "8px",
+                      }}
+                    >
                       <View style={{ width: "50%", height: "60px" }}>
-                        <View style={{
-                          width: "100%",
-                          height: "60px",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          fontSize: "8px",
-                        }}>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center", borderBottom: "1px solid #000", borderRight: "1px solid #000" }}>
+                        <View
+                          style={{
+                            width: "100%",
+                            height: "60px",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontSize: "8px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              borderBottom: "1px solid #000",
+                              borderRight: "1px solid #000",
+                            }}
+                          >
                             <Text style={{ fontFamily: "PopBold" }}>Owner</Text>
                           </View>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center", borderRight: "1px solid #000" }}>
-                            <Text style={{ fontFamily: "PopBold" }}>Carrier</Text>
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              borderRight: "1px solid #000",
+                            }}
+                          >
+                            <Text style={{ fontFamily: "PopBold" }}>
+                              Carrier
+                            </Text>
                           </View>
                         </View>
                       </View>
                       <View style={{ width: "50%", height: "60px" }}>
-                        <View style={{
-                          width: "100%",
-                          height: "60px",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          fontSize: "8px",
-                        }}>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center", borderBottom: "1px solid #000" }}>
+                        <View
+                          style={{
+                            width: "100%",
+                            height: "60px",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontSize: "8px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              borderBottom: "1px solid #000",
+                            }}
+                          >
                             <Text style={{ fontFamily: "PopBold" }}></Text>
                           </View>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
                             <Text style={{ fontFamily: "PopBold" }}></Text>
                           </View>
                         </View>
                       </View>
                     </View>
-
                   </View>
                 </View>
-
               </View>
-
 
               {/* Row-4 */}
               <View
@@ -733,16 +796,39 @@ const TestingPDF = () => {
                   borderBottom: "1px solid #000",
                 }}
               >
-
-                <View style={{ width: "50%", height: "20px", borderRight: "1px solid #000", fontFamily: "PopBold", fontSize: "7px", display: "flex", justifyContent: "space-around", alignItems: "center", flexDirection: "row" }}>
+                <View
+                  style={{
+                    width: "50%",
+                    height: "20px",
+                    borderRight: "1px solid #000",
+                    fontFamily: "PopBold",
+                    fontSize: "7px",
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
                   <Text>https:www.dtdc.in</Text>
                   <Text>customersupport@dtdc.com</Text>
                   <Text>+91-7305770577</Text>
                 </View>
-                <View style={{ width: "50%", height: "20px", fontFamily: "PopBold", fontSize: "7px", display: "flex", justifyContent: "start", alignItems: "center", flexDirection: "row" }}>
-                  <Text style={{ paddingLeft: "5px" }}>Amount collected (in Rs.):</Text>
+                <View
+                  style={{
+                    width: "50%",
+                    height: "20px",
+                    fontFamily: "PopBold",
+                    fontSize: "7px",
+                    display: "flex",
+                    justifyContent: "start",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text style={{ paddingLeft: "5px" }}>
+                    Amount collected (in Rs.):
+                  </Text>
                 </View>
-
               </View>
 
               {/* Row-5 */}
@@ -759,28 +845,74 @@ const TestingPDF = () => {
                   borderBottom: "1px solid #000",
                 }}
               >
-
-                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>DOCUMENT IS NOT A TAX INVOICE. WEIGHT CAPTURED BY DTDC WILL BE USED FOR INVOICE GENERATION.</Text>
-                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>Sender's Copy</Text>
-
-
+                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>
+                  DOCUMENT IS NOT A TAX INVOICE. WEIGHT CAPTURED BY DTDC WILL BE
+                  USED FOR INVOICE GENERATION.
+                </Text>
+                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>
+                  Sender's Copy
+                </Text>
               </View>
 
               {/* Line Cut */}
-              <View style={{ width: "100%", height: "100px", display: "flex", flexDirection: "row", justifyContent:"center", alignItems:"center" }}>
-                <View style={{ width: "15%", borderBottom: "1px solid #000", borderStyle: "dashed" }}></View>
+              <View
+                style={{
+                  width: "100%",
+                  height: "100px",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <View
+                  style={{
+                    width: "15%",
+                    borderBottom: "1px solid #000",
+                    borderStyle: "dashed",
+                  }}
+                ></View>
                 <Image src={cut} style={{ height: "20px" }} />
-                <View style={{ width: "15%", borderBottom: "1px solid #000", borderStyle: "dashed" }}></View>
+                <View
+                  style={{
+                    width: "15%",
+                    borderBottom: "1px solid #000",
+                    borderStyle: "dashed",
+                  }}
+                ></View>
                 <Image src={cut} style={{ height: "20px" }} />
-                <View style={{ width: "15%", borderBottom: "1px solid #000", borderStyle: "dashed" }}></View>
+                <View
+                  style={{
+                    width: "15%",
+                    borderBottom: "1px solid #000",
+                    borderStyle: "dashed",
+                  }}
+                ></View>
                 <Image src={cut} style={{ height: "20px" }} />
-                <View style={{ width: "15%", borderBottom: "1px solid #000", borderStyle: "dashed" }}></View>
+                <View
+                  style={{
+                    width: "15%",
+                    borderBottom: "1px solid #000",
+                    borderStyle: "dashed",
+                  }}
+                ></View>
                 <Image src={cut} style={{ height: "20px" }} />
-                <View style={{ width: "15%", borderBottom: "1px solid #000", borderStyle: "dashed" }}></View>
+                <View
+                  style={{
+                    width: "15%",
+                    borderBottom: "1px solid #000",
+                    borderStyle: "dashed",
+                  }}
+                ></View>
                 <Image src={cut} style={{ height: "20px" }} />
-                <View style={{ width: "15%", borderBottom: "1px solid #000", borderStyle: "dashed" }}></View>
+                <View
+                  style={{
+                    width: "15%",
+                    borderBottom: "1px solid #000",
+                    borderStyle: "dashed",
+                  }}
+                ></View>
               </View>
-
 
               {/* Row-1 */}
               <View
@@ -1111,10 +1243,12 @@ const TestingPDF = () => {
                   borderLeft: "1px solid #000",
                 }}
               >
-                <View style={{
-                  width: "25%",
-                  height: "120px"
-                }}>
+                <View
+                  style={{
+                    width: "25%",
+                    height: "120px",
+                  }}
+                >
                   <View
                     style={{
                       width: "100%",
@@ -1157,26 +1291,46 @@ const TestingPDF = () => {
                     </View>
                   </View>
 
-                  <View style={{
-                    width: "100%",
-                    height: "80px",
-                    borderRight: "1px solid #000",
-                    borderBottom: "1px solid #000",
-                    fontSize: "5px",
-                    fontFamily: "PopRegular",
-                    textAlign: "justify",
-                    padding: "5px 5px",
-                  }}>
-                    <Text style={{ textAlign: "justify" }}>I/We declare that this consignment does not contain personal mail, cash, jewellery, contraband, illegal drugs, any prohibited items and commodities which can cause safety hazards while transporting</Text>
-                    <Text style={{ textAlign: "center", marginTop: "10px", fontFamily: "PopBold", textDecoration: "underline" }}>Sende's Signature & Seal</Text>
-                    <Text style={{ textAlign: "justify", marginTop: "2px" }}>I have read and understood terms & conditions ofcarriage mentioned on website www.dtdc.in, and I agree to the Same.</Text>
+                  <View
+                    style={{
+                      width: "100%",
+                      height: "80px",
+                      borderRight: "1px solid #000",
+                      borderBottom: "1px solid #000",
+                      fontSize: "5px",
+                      fontFamily: "PopRegular",
+                      textAlign: "justify",
+                      padding: "5px 5px",
+                    }}
+                  >
+                    <Text style={{ textAlign: "justify" }}>
+                      I/We declare that this consignment does not contain
+                      personal mail, cash, jewellery, contraband, illegal drugs,
+                      any prohibited items and commodities which can cause
+                      safety hazards while transporting
+                    </Text>
+                    <Text
+                      style={{
+                        textAlign: "center",
+                        marginTop: "10px",
+                        fontFamily: "PopBold",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      Sende's Signature & Seal
+                    </Text>
+                    <Text style={{ textAlign: "justify", marginTop: "2px" }}>
+                      I have read and understood terms & conditions ofcarriage
+                      mentioned on website www.dtdc.in, and I agree to the Same.
+                    </Text>
                   </View>
                 </View>
                 <View
                   style={{
                     width: "25%",
-                    height: "120px"
-                  }}>
+                    height: "120px",
+                  }}
+                >
                   <View
                     style={{
                       width: "100%",
@@ -1202,9 +1356,7 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Declared Value:
-                      </Text>
+                      <Text>Declared Value:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>30000</Text>
                     </View>
                     <View
@@ -1221,9 +1373,7 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        No Of Pieces:
-                      </Text>
+                      <Text>No Of Pieces:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>1</Text>
                     </View>
                     <View
@@ -1239,9 +1389,7 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Actual Weight:
-                      </Text>
+                      <Text>Actual Weight:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>16.215 Kgs</Text>
                     </View>
                   </View>
@@ -1256,7 +1404,6 @@ const TestingPDF = () => {
                       fontSize: "8px",
                     }}
                   >
-
                     <View
                       style={{
                         width: "100%",
@@ -1271,10 +1418,10 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Dim:
+                      <Text>Dim:</Text>
+                      <Text style={{ fontFamily: "PopBold" }}>
+                        1 cm X 1 cm X 1 cm
                       </Text>
-                      <Text style={{ fontFamily: "PopBold" }}>1 cm X 1 cm X 1 cm</Text>
                     </View>
 
                     <View
@@ -1290,13 +1437,9 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text >
-                        Charged weight:
-                      </Text>
+                      <Text>Charged weight:</Text>
                       <Text style={{ fontFamily: "PopBold" }}>16.215 Kgs</Text>
                     </View>
-
-
                   </View>
                   <View
                     style={{
@@ -1322,10 +1465,8 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text style={{ fontFamily: "PopBold" }}>
-                        Name:
-                      </Text>
-                      <Text >SELLAPADI</Text>
+                      <Text style={{ fontFamily: "PopBold" }}>Name:</Text>
+                      <Text>SELLAPADI</Text>
                     </View>
                     <View
                       style={{
@@ -1338,10 +1479,13 @@ const TestingPDF = () => {
                         // gap: "3px",
                       }}
                     >
-                      <Text style={{ width: "18%", fontFamily: "PopBold", }}>
+                      <Text style={{ width: "18%", fontFamily: "PopBold" }}>
                         Address:
                       </Text>
-                      <Text style={{ width: "75%", }}>Navaladiyar Complex, 26/aarthi Theater Road, VMRP,-,DGL,636307</Text>
+                      <Text style={{ width: "75%" }}>
+                        Navaladiyar Complex, 26/aarthi Theater Road,
+                        VMRP,-,DGL,636307
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -1354,17 +1498,17 @@ const TestingPDF = () => {
                         gap: "3px",
                       }}
                     >
-                      <Text style={{ fontFamily: "PopBold" }}>
-                        Phone:
-                      </Text>
-                      <Text >7598057298</Text>
+                      <Text style={{ fontFamily: "PopBold" }}>Phone:</Text>
+                      <Text>7598057298</Text>
                     </View>
                   </View>
                 </View>
-                <View style={{
-                  width: "50%",
-                  height: "120px"
-                }}>
+                <View
+                  style={{
+                    width: "50%",
+                    height: "120px",
+                  }}
+                >
                   <View
                     style={{
                       width: "100%",
@@ -1388,7 +1532,7 @@ const TestingPDF = () => {
                         // alignItems: "ceter",
                         flexDirection: "row",
                         gap: "3px",
-                        paddingTop: "5px"
+                        paddingTop: "5px",
                       }}
                     >
                       <Text style={{ marginTop: "1px" }}>AWB No:</Text>
@@ -1407,73 +1551,116 @@ const TestingPDF = () => {
                       fontSize: "8px",
                     }}
                   >
-
-                    <View style={{
-                      width: "50%",
-                      height: "60px",
-                      display: "flex",
-                      flexDirection: "column",
-                      borderRight: "1px solid #000",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "8px",
-                    }}>
-                      <Text style={{ fontSize: "10px", fontFamily: "PopBold" }}>Risk Surcharge</Text>
+                    <View
+                      style={{
+                        width: "50%",
+                        height: "60px",
+                        display: "flex",
+                        flexDirection: "column",
+                        borderRight: "1px solid #000",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "8px",
+                      }}
+                    >
+                      <Text style={{ fontSize: "10px", fontFamily: "PopBold" }}>
+                        Risk Surcharge
+                      </Text>
                     </View>
 
-
-                    <View style={{
-                      width: "50%",
-                      height: "60px",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      fontSize: "8px",
-                    }}>
+                    <View
+                      style={{
+                        width: "50%",
+                        height: "60px",
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        fontSize: "8px",
+                      }}
+                    >
                       <View style={{ width: "50%", height: "60px" }}>
-                        <View style={{
-                          width: "100%",
-                          height: "60px",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          fontSize: "8px",
-                        }}>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center", borderBottom: "1px solid #000", borderRight: "1px solid #000" }}>
+                        <View
+                          style={{
+                            width: "100%",
+                            height: "60px",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontSize: "8px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              borderBottom: "1px solid #000",
+                              borderRight: "1px solid #000",
+                            }}
+                          >
                             <Text style={{ fontFamily: "PopBold" }}>Owner</Text>
                           </View>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center", borderRight: "1px solid #000" }}>
-                            <Text style={{ fontFamily: "PopBold" }}>Carrier</Text>
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              borderRight: "1px solid #000",
+                            }}
+                          >
+                            <Text style={{ fontFamily: "PopBold" }}>
+                              Carrier
+                            </Text>
                           </View>
                         </View>
                       </View>
                       <View style={{ width: "50%", height: "60px" }}>
-                        <View style={{
-                          width: "100%",
-                          height: "60px",
-                          display: "flex",
-                          flexDirection: "column",
-                          justifyContent: "center",
-                          alignItems: "center",
-                          fontSize: "8px",
-                        }}>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center", borderBottom: "1px solid #000" }}>
+                        <View
+                          style={{
+                            width: "100%",
+                            height: "60px",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            fontSize: "8px",
+                          }}
+                        >
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              borderBottom: "1px solid #000",
+                            }}
+                          >
                             <Text style={{ fontFamily: "PopBold" }}></Text>
                           </View>
-                          <View style={{ width: "100%", height: "30px", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                          <View
+                            style={{
+                              width: "100%",
+                              height: "30px",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                            }}
+                          >
                             <Text style={{ fontFamily: "PopBold" }}></Text>
                           </View>
                         </View>
                       </View>
                     </View>
-
                   </View>
                 </View>
-
               </View>
-
 
               {/* Row-4 */}
               <View
@@ -1487,16 +1674,39 @@ const TestingPDF = () => {
                   borderBottom: "1px solid #000",
                 }}
               >
-
-                <View style={{ width: "50%", height: "20px", borderRight: "1px solid #000", fontFamily: "PopBold", fontSize: "7px", display: "flex", justifyContent: "space-around", alignItems: "center", flexDirection: "row" }}>
+                <View
+                  style={{
+                    width: "50%",
+                    height: "20px",
+                    borderRight: "1px solid #000",
+                    fontFamily: "PopBold",
+                    fontSize: "7px",
+                    display: "flex",
+                    justifyContent: "space-around",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
                   <Text>https:www.dtdc.in</Text>
                   <Text>customersupport@dtdc.com</Text>
                   <Text>+91-7305770577</Text>
                 </View>
-                <View style={{ width: "50%", height: "20px", fontFamily: "PopBold", fontSize: "7px", display: "flex", justifyContent: "start", alignItems: "center", flexDirection: "row" }}>
-                  <Text style={{ paddingLeft: "5px" }}>Amount collected (in Rs.):</Text>
+                <View
+                  style={{
+                    width: "50%",
+                    height: "20px",
+                    fontFamily: "PopBold",
+                    fontSize: "7px",
+                    display: "flex",
+                    justifyContent: "start",
+                    alignItems: "center",
+                    flexDirection: "row",
+                  }}
+                >
+                  <Text style={{ paddingLeft: "5px" }}>
+                    Amount collected (in Rs.):
+                  </Text>
                 </View>
-
               </View>
 
               {/* Row-5 */}
@@ -1513,11 +1723,13 @@ const TestingPDF = () => {
                   borderBottom: "1px solid #000",
                 }}
               >
-
-                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>DOCUMENT IS NOT A TAX INVOICE. WEIGHT CAPTURED BY DTDC WILL BE USED FOR INVOICE GENERATION.</Text>
-                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>Sender's Copy</Text>
-
-
+                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>
+                  DOCUMENT IS NOT A TAX INVOICE. WEIGHT CAPTURED BY DTDC WILL BE
+                  USED FOR INVOICE GENERATION.
+                </Text>
+                <Text style={{ fontSize: "6px", fontFamily: "PopBold" }}>
+                  Sender's Copy
+                </Text>
               </View>
             </View>
           </Page>
