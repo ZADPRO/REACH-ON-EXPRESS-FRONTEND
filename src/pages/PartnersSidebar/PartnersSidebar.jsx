@@ -12,19 +12,16 @@ export default function PartnersSidebar() {
   const [partners, setPartners] = useState("");
   const [contactDetails, setContactDetails] = useState("");
   const [validity, setValidity] = useState("");
+  const [editingPartner, setEditingPartner] = useState(null);
 
   useEffect(() => {
     getPartners();
-    const storedProducts = JSON.parse(localStorage.getItem("partners")) || [];
-    setPartnerDetails(storedProducts);
   }, []);
 
   const getPartners = () => {
     axios
       .get(import.meta.env.VITE_API_URL + "/Routes/getPartner", {
-        headers: {
-          Authorization: localStorage.getItem("JWTtoken"),
-        },
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
       })
       .then((res) => {
         const data = decrypt(
@@ -32,7 +29,6 @@ export default function PartnersSidebar() {
           res.data[0],
           import.meta.env.VITE_ENCRYPTION_KEY
         );
-        console.log("data", data);
         setPartnerDetails(data.partners);
       })
       .catch((error) => {
@@ -40,48 +36,57 @@ export default function PartnersSidebar() {
       });
   };
 
-  const addProduct = () => {
+  const handleEdit = (partner) => {
+    setPartners(partner.partnersName);
+    setContactDetails(partner.phoneNumber);
+    setValidity(partner.validity);
+    setEditingPartner(partner);
+    setShowInputSection(true);
+  };
+
+  const addOrUpdatePartner = () => {
     if (partners.trim()) {
-      const newProducts = [
-        ...partnerDetails,
-        {
+      if (editingPartner) {
+        const updatedPartners = partnerDetails.map((p) =>
+          p.id === editingPartner.id
+            ? {
+                ...p,
+                partnersName: partners,
+                phoneNumber: contactDetails,
+                validity,
+              }
+            : p
+        );
+        setPartnerDetails(updatedPartners);
+      } else {
+        const newPartner = {
           id: partnerDetails.length + 1,
-          name: partners,
-          contact: contactDetails,
-          validity: validity,
-        },
-      ];
-      setPartnerDetails(newProducts);
-      // localStorage.setItem("partners", JSON.stringify(newProducts));
-      try {
-        const response = axios.post(
-          import.meta.env.VITE_API_URL + "/Routes/addPartners",
+          partnersName: partners,
+          phoneNumber: contactDetails,
+          validity,
+        };
+        setPartnerDetails([...partnerDetails, newPartner]);
+      }
+
+      axios
+        .post(
+          import.meta.env.VITE_API_URL + "/Routes/addOrUpdatePartners",
           {
             partnersName: partners,
             validityDate: validity,
             mobileNumber: contactDetails,
           },
           {
-            headers: {
-              Authorization: localStorage.getItem("JWTtoken"),
-            },
+            headers: { Authorization: localStorage.getItem("JWTtoken") },
           }
-        );
+        )
+        .then(() => getPartners())
+        .catch((error) => console.error(error));
 
-        const data = decrypt(
-          response.data[1],
-          response.data[0],
-          import.meta.env.VITE_ENCRYPTION_KEY
-        );
-
-        localStorage.setItem("JWTtoken", "Bearer " + data.token);
-        getPartners();
-      } catch (error) {
-        console.error(error);
-      }
       setPartners("");
       setContactDetails("");
       setValidity("");
+      setEditingPartner(null);
       setShowInputSection(false);
     }
   };
@@ -92,42 +97,34 @@ export default function PartnersSidebar() {
         <Button
           label="Add"
           severity="success"
-          onClick={() => setShowInputSection(!showInputSection)}
+          onClick={() => {
+            setEditingPartner(null);
+            setShowInputSection(!showInputSection);
+          }}
         />
       </div>
       {showInputSection && (
         <div className="flex mt-3 gap-2">
-          <div className="p-inputgroup flex-1">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-user"></i>
-            </span>
-            <InputText
-              placeholder="Partners"
-              value={partners}
-              onChange={(e) => setPartners(e.target.value)}
-            />
-          </div>
-          <div className="p-inputgroup flex-1">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-phone"></i>
-            </span>
-            <InputText
-              placeholder="Contact"
-              value={contactDetails}
-              onChange={(e) => setContactDetails(e.target.value)}
-            />
-          </div>
-          <div className="p-inputgroup flex-1">
-            <span className="p-inputgroup-addon">
-              <i className="pi pi-calendar"></i>
-            </span>
-            <InputText
-              placeholder="Validity"
-              value={validity}
-              onChange={(e) => setValidity(e.target.value)}
-            />
-          </div>
-          <Button label="Add" severity="info" onClick={addProduct} />
+          <InputText
+            placeholder="Partners"
+            value={partners}
+            onChange={(e) => setPartners(e.target.value)}
+          />
+          <InputText
+            placeholder="Contact"
+            value={contactDetails}
+            onChange={(e) => setContactDetails(e.target.value)}
+          />
+          <InputText
+            placeholder="Validity"
+            value={validity}
+            onChange={(e) => setValidity(e.target.value)}
+          />
+          <Button
+            label={editingPartner ? "Update" : "Add"}
+            severity="info"
+            onClick={addOrUpdatePartner}
+          />
           <Button
             label="Cancel"
             severity="danger"
@@ -138,18 +135,16 @@ export default function PartnersSidebar() {
     </>
   );
 
-  const quantityTemplate = (rowData) => {
-    return (
-      <Button
-        rounded
-        outlined
-        text
-        severity="info"
-        icon="pi pi-pencil"
-        onClick={() => console.log("Edit quantity for", rowData.id)}
-      />
-    );
-  };
+  const actionTemplate = (rowData) => (
+    <Button
+      rounded
+      outlined
+      text
+      severity="info"
+      icon="pi rpi-pencil"
+      onClick={() => handleEdit(rowData)}
+    />
+  );
 
   return (
     <div>
@@ -157,7 +152,6 @@ export default function PartnersSidebar() {
       <DataTable
         scrollable
         stripedRows
-        className="partnersVendorId"
         value={partnerDetails}
         header={header}
         showGridlines
@@ -170,7 +164,7 @@ export default function PartnersSidebar() {
         <Column field="partnersName" header="Partners"></Column>
         <Column field="phoneNumber" header="Contact"></Column>
         <Column field="validity" header="Validity"></Column>
-        <Column field="edit" header="Actions" body={quantityTemplate}></Column>
+        <Column field="edit" header="Actions" body={actionTemplate}></Column>
       </DataTable>
     </div>
   );

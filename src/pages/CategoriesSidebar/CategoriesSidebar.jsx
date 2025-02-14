@@ -5,6 +5,8 @@ import { Button } from "primereact/button";
 import { Divider } from "primereact/divider";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
+import axios from "axios";
+import decrypt from "../../helper";
 
 export default function CategoriesSidebar() {
   const [showInputSection, setShowInputSection] = useState(false);
@@ -16,12 +18,52 @@ export default function CategoriesSidebar() {
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    getCategory();
+    getSubCategory();
     const storedCategories =
       JSON.parse(localStorage.getItem("categories")) || [];
     setCategories(storedCategories);
     const storedData = JSON.parse(localStorage.getItem("subCategories")) || [];
     setData(storedData);
   }, []);
+
+  const getCategory = () => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getCategory", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data line 62", data);
+        setCategories(data.Category);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  };
+
+  const getSubCategory = () => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getSubCategory", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data line 62-------", data);
+        setData(data.SubCategory);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  };
 
   const handleDropdownChange = (e) => {
     if (e.value.id === "add_new") {
@@ -35,12 +77,36 @@ export default function CategoriesSidebar() {
 
   const handleAddCategory = () => {
     if (newCategory.trim()) {
-      const updatedCategories = [
-        ...categories,
-        { name: newCategory, id: categories.length + 1 },
-      ];
-      setCategories(updatedCategories);
-      localStorage.setItem("categories", JSON.stringify(updatedCategories));
+      // const updatedCategories = [
+      //   ...categories,
+      //   { name: newCategory, id: categories.length + 1 },
+      // ];
+      axios
+        .post(
+          import.meta.env.VITE_API_URL + "/Routes/addCategory",
+          {
+            category: newCategory,
+          },
+          {
+            headers: { Authorization: localStorage.getItem("JWTtoken") },
+          }
+        )
+        .then((res) => {
+          const data = decrypt(
+            res.data[1],
+            res.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          console.log("data - line 60", data);
+          if (data.success) {
+            getCategory();
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching vendor details:", error);
+        });
+      // setCategories(updatedCategories);
+      // localStorage.setItem("categories", JSON.stringify(updatedCategories));
       setNewCategory("");
       setShowInput(false);
     }
@@ -57,22 +123,50 @@ export default function CategoriesSidebar() {
         ...data,
         { id: data.length + 1, category: selectedCategory.name, subCategory },
       ];
+
+      console.log("selectedCategory line 107", selectedCategory);
+      axios
+        .post(
+          import.meta.env.VITE_API_URL + "/Routes/addSubCategory",
+          {
+            categoryId: selectedCategory.refCategoryId,
+            subcategory: subCategory,
+          },
+          {
+            headers: { Authorization: localStorage.getItem("JWTtoken") },
+          }
+        )
+        .then((res) => {
+          const data = decrypt(
+            res.data[1],
+            res.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          console.log("data - line 60", data);
+          if (data.success) {
+            getCategory();
+            getSubCategory();
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching vendor details:", error);
+        });
       console.log("newData", newData);
       setData(newData);
-      localStorage.setItem("subCategories", JSON.stringify(newData));
+      // localStorage.setItem("subCategories", JSON.stringify(newData));
       setSubCategory("");
     }
   };
 
   const categoryOptions = [
     ...(categories || []),
-    { name: "Add New Category", id: "add_new" },
+    { refCategory: "Add New Category", id: "add_new" },
   ];
 
   const representativeBodyTemplate = (rowData) => {
     return (
       <div className="flex align-items-center gap-2">
-        <span>{rowData.category}</span>
+        <span>{rowData.refCategory}</span>
       </div>
     );
   };
@@ -90,7 +184,7 @@ export default function CategoriesSidebar() {
 
   return (
     <div>
-      <h3>Categories Sidebar</h3>
+      <h3>Categories</h3>
       <div className="flex flex-wrap gap-2 mb-3 align-items-center justify-content-end">
         <Button
           label="Add"
@@ -111,7 +205,7 @@ export default function CategoriesSidebar() {
                 value={selectedCategory}
                 onChange={handleDropdownChange}
                 options={categoryOptions}
-                optionLabel="name"
+                optionLabel="refCategory"
                 filter
                 placeholder="Select Category"
                 style={{ maxWidth: "14rem" }}
@@ -168,11 +262,11 @@ export default function CategoriesSidebar() {
         showGridlines
         stripedRows
         scrollable
-        scrollHeight="300px"
+        scrollHeight="400px"
         rowGroupMode="rowspan"
-        groupRowsBy="category"
+        groupRowsBy="refCategory"
         sortMode="single"
-        sortField="category"
+        sortField="refCategory"
         sortOrder={1}
       >
         <Column
@@ -181,13 +275,13 @@ export default function CategoriesSidebar() {
           body={(data, options) => options.rowIndex + 1}
         ></Column>
         <Column
-          field="category"
+          field="refCategory"
           header="Category"
           body={representativeBodyTemplate}
           style={{ minWidth: "200px" }}
         ></Column>
         <Column
-          field="subCategory"
+          field="refSubCategory"
           header="Sub Category"
           style={{ minWidth: "200px" }}
         ></Column>
