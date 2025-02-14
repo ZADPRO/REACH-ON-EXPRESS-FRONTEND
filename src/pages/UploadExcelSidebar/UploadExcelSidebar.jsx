@@ -9,6 +9,8 @@ import { Toast } from "primereact/toast";
 import * as XLSX from "xlsx";
 
 import sampleExcel from "../../assets/excel/sample.xlsx";
+import axios from "axios";
+import decrypt from "../../helper";
 
 export default function UploadExcelSidebar() {
   const [checked, setChecked] = useState(false);
@@ -30,14 +32,21 @@ export default function UploadExcelSidebar() {
   const formatExcelDate = (excelDate) => {
     if (!excelDate) return "";
 
+    if (
+      typeof excelDate === "string" &&
+      /^\d{2}-\d{2}-\d{4}$/.test(excelDate)
+    ) {
+      const [day, month, year] = excelDate.split("-");
+      return `${year}-${month}-${day}`;
+    }
+
     if (!isNaN(excelDate)) {
       const date = new Date((excelDate - 25569) * 86400 * 1000);
-
-      const day = String(date.getDate()).padStart(2, "0");
-      const month = String(date.getMonth() + 1).padStart(2, "0");
       const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
 
-      return `${day}-${month}-${year}`;
+      return `${year}-${month}-${day}`;
     }
 
     return excelDate;
@@ -74,13 +83,6 @@ export default function UploadExcelSidebar() {
 
         // Check for required columns
         if (!checkRequiredColumns(jsonData)) return;
-
-        jsonData = jsonData.map((row) => {
-          if (row["Purchased Date"]) {
-            row["Purchased Date"] = formatExcelDate(row["Purchased Date"]);
-          }
-          return row;
-        });
 
         const leafIdSet = new Map();
         const vendorIdSet = new Map();
@@ -141,8 +143,28 @@ export default function UploadExcelSidebar() {
       console.log("uploadedData", uploadedData);
       console.log("Payload:", JSON.stringify(uploadedData, null, 2));
 
-      localStorage.setItem("uploadedExcel", JSON.stringify(uploadedData));
-
+      // localStorage.setItem("uploadedExcel", JSON.stringify(uploadedData));
+      axios
+        .post(
+          import.meta.env.VITE_API_URL + "/routes/addMapping",
+          {
+            mappingData: uploadedData,
+          },
+          {
+            headers: { Authorization: localStorage.getItem("JWTtoken") },
+          }
+        )
+        .then((res) => {
+          const data = decrypt(
+            res.data[1],
+            res.data[0],
+            import.meta.env.VITE_ENCRYPTION_KEY
+          );
+          console.log("data", data);
+        })
+        .catch((error) => {
+          console.error("Error fetching vendor details:", error);
+        });
       toast.current.show({
         severity: "success",
         summary: "Upload Successful",
