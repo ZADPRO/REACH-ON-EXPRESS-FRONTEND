@@ -10,6 +10,8 @@ import { InputText } from "primereact/inputtext";
 import { Sidebar } from "primereact/sidebar";
 
 import EmployeeSidebar from "../../pages/EmployeeSidebar/EmployeeSidebar";
+import decrypt from "../../helper";
+import axios from "axios";
 
 export default function Employees() {
   const [employees, setEmployees] = useState(null);
@@ -25,8 +27,23 @@ export default function Employees() {
   }, []);
 
   const fetchEmployees = () => {
-    const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
-    setEmployees(storedEmployees);
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getEmployee", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data line 62", data);
+        setEmployees(data.Employee);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+    // const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
   };
 
   const exportCSV = () => {
@@ -118,24 +135,32 @@ export default function Employees() {
               style={{ minWidth: "4rem" }}
             ></Column>
             <Column
+              field="refCustId"
+              header="Employee ID"
+              frozen
+              style={{ minWidth: "10rem", textTransform: "capitalize" }}
+            ></Column>
+            <Column
               field="firstName"
               header="Employee Name"
               frozen
-              body={(rowData) => `${rowData.firstName} ${rowData.lastName}`}
-              style={{ minWidth: "13rem" }}
+              body={(rowData) =>
+                `${rowData.refUserFName} ${rowData.refUserLName}`
+              }
+              style={{ minWidth: "13rem", textTransform: "capitalize" }}
             ></Column>
             <Column
-              field="designation"
+              field="userTypeName"
               header="Designation"
-              style={{ minWidth: "13rem" }}
+              style={{ minWidth: "13rem", textTransform: "capitalize" }}
             ></Column>
             <Column
-              field="email"
+              field="refEmail"
               header="Email"
               style={{ minWidth: "13rem" }}
             ></Column>
             <Column
-              field="mobile"
+              field="refCustMobileNum"
               header="Contact Number"
               style={{ minWidth: "13rem" }}
             ></Column>

@@ -13,6 +13,8 @@ import { Toast } from "primereact/toast";
 
 import "./Key.css";
 import UploadExcelSidebar from "../../pages/UploadExcelSidebar/UploadExcelSidebar";
+import axios from "axios";
+import decrypt from "../../helper";
 
 export default function Key() {
   const toast = useRef(null);
@@ -36,21 +38,27 @@ export default function Key() {
     { name: "Cancelled", code: 5 },
   ];
 
-  const generateTrackingId = (id, date) => {
-    const paddedNumber = String(id).padStart(5, "0");
-    const formattedDate = new Date(date)
-      .toLocaleDateString("en-US", {
-        month: "2-digit",
-        year: "2-digit",
-      })
-      .replace("/", "");
-    return `R${paddedNumber}${formattedDate}`;
-  };
-
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("uploadedExcel")) || [];
-
-    setCustomers(data);
+    axios
+      .get(import.meta.env.VITE_API_URL + "/routes/mapping", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data line 63 --------- ", data);
+        if (data.success) {
+          console.log("data.success", data.success);
+          setCustomers(data.data);
+        }
+      })
+      .catch((error) => {
+        setCustomers([]);
+        console.error("Error fetching vendor details:", error);
+      });
   }, []);
 
   const handleEdit = (rowData) => {
@@ -174,17 +182,15 @@ export default function Key() {
         ></Toolbar>
 
         <DataTable
-          value={customers.map((customer, index) => ({
-            ...customer,
-            trackingId: generateTrackingId(index + 1, customer.purchasedDate),
-          }))}
+          value={customers}
           ref={dt}
           scrollable
           showGridlines
           stripedRows
+          className="transactionDetailsTable"
           header={header}
           globalFilter={globalFilter}
-          scrollHeight="300px"
+          scrollHeight="350px"
         >
           <Column
             field="id"
@@ -196,32 +202,41 @@ export default function Key() {
             field="vendorLeaf"
             header="Leaf"
             frozen
-            style={{ minWidth: "10rem" }}
+            style={{ minWidth: "10rem", textTransform: "capitalize" }}
           ></Column>
           <Column
             field="vendor"
             header="Partners"
-            style={{ minWidth: "12rem" }}
+            style={{ minWidth: "12rem", textTransform: "capitalize" }}
           ></Column>
           <Column
-            field="status"
+            field="refStatus"
             header="Status"
-            style={{ minWidth: "8rem" }}
+            style={{ minWidth: "8rem", textTransform: "capitalize" }}
           ></Column>
           <Column
             field="purchasedDate"
             header="Purchased Date"
-            style={{ minWidth: "10rem" }}
+            style={{ minWidth: "10rem", textTransform: "capitalize" }}
           ></Column>
           <Column
             field="validity"
             header="Validity"
-            style={{ minWidth: "10rem" }}
+            style={{ minWidth: "10rem", textTransform: "capitalize" }}
+          ></Column>
+          <Column
+            field="validityDate"
+            header="Validity Date"
+            style={{ minWidth: "10rem", textTransform: "capitalize" }}
           ></Column>
           <Column
             header="Action"
             body={actionBodyTemplate}
-            style={{ textAlign: "center", minWidth: "10rem" }}
+            style={{
+              textAlign: "center",
+              minWidth: "10rem",
+              textTransform: "capitalize",
+            }}
           ></Column>
         </DataTable>
       </div>

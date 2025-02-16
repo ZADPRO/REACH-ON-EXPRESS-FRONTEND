@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { InputText } from "primereact/inputtext";
 import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
+import axios from "axios";
+import decrypt from "../../helper";
 
 export default function EmployeeSidebar({ onEmployeeAdded }) {
   const [firstName, setFirstName] = useState("");
@@ -13,11 +15,26 @@ export default function EmployeeSidebar({ onEmployeeAdded }) {
   const [selectedDesignation, setSelectedDesignation] = useState(null);
   const [dateOfBirth, setDateOfBirth] = useState(null);
 
-  const designations = [
-    { name: "Admin", code: 1 },
-    { name: "Finance", code: 2 },
-    { name: "Employee", code: 3 },
-  ];
+  const [designations, setDesignations] = useState("");
+
+  useEffect(() => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getUsertype", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data line 6dsfa2", data);
+        setDesignations(data.Usertype);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  }, []);
 
   const handleAddEmployee = () => {
     const newEmployee = {
@@ -30,10 +47,42 @@ export default function EmployeeSidebar({ onEmployeeAdded }) {
       dateOfBirth,
     };
 
-    const existingEmployees =
-      JSON.parse(localStorage.getItem("employees")) || [];
-    existingEmployees.push(newEmployee);
-    localStorage.setItem("employees", JSON.stringify(existingEmployees));
+    console.log("designation", selectedDesignation);
+    axios
+      .post(
+        import.meta.env.VITE_API_URL + "/Routes/addEmployee",
+        {
+          temp_fname: firstName,
+          temp_lname: lastName,
+          designation: selectedDesignation.userTypeName,
+          userType: selectedDesignation.userTypeId,
+          temp_phone: mobile,
+          temp_email: email,
+          dateOfBirth: dateOfBirth,
+          qualification: qualification,
+        },
+        {
+          headers: { Authorization: localStorage.getItem("JWTtoken") },
+        }
+      )
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data - line 60", data);
+        if (data.success) {
+          // getCategory();
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+    // const existingEmployees =
+    //   JSON.parse(localStorage.getItem("employees")) || [];
+    // existingEmployees.push(newEmployee);
+    // localStorage.setItem("employees", JSON.stringify(existingEmployees));
 
     // Reset fields
     setFirstName("");
@@ -81,7 +130,8 @@ export default function EmployeeSidebar({ onEmployeeAdded }) {
             value={selectedDesignation}
             onChange={(e) => setSelectedDesignation(e.value)}
             options={designations}
-            optionLabel="name"
+            optionLabel="userTypeName"
+            style={{ textTransform: "capitalize" }}
             placeholder="Select Designation"
             className="w-full md:w-14rem"
           />

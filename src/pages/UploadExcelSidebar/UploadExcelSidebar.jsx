@@ -88,15 +88,24 @@ export default function UploadExcelSidebar() {
         const vendorIdSet = new Map();
         let duplicateFound = false;
 
-        jsonData.forEach((row, index) => {
-          const leafId = row["leafId"];
-          const vendorId = row["vendorLeaf"];
+        jsonData = jsonData.map((row, index) => {
+          const formattedRow = { ...row };
+
+          // Format the purchasedDate column to yyyy-mm-dd
+          if (formattedRow.purchasedDate) {
+            formattedRow.purchasedDate = formatExcelDate(
+              formattedRow.purchasedDate
+            );
+          }
+
+          const leafId = formattedRow["leafId"];
+          const vendorId = formattedRow["vendorLeaf"];
 
           if (leafId) {
             if (leafIdSet.has(leafId)) {
               const prevIndex = leafIdSet.get(leafId);
               jsonData[prevIndex].duplicate = true;
-              row.duplicate = true;
+              formattedRow.duplicate = true;
               duplicateFound = true;
             }
             leafIdSet.set(leafId, index);
@@ -106,11 +115,13 @@ export default function UploadExcelSidebar() {
             if (vendorIdSet.has(vendorId)) {
               const prevIndex = vendorIdSet.get(vendorId);
               jsonData[prevIndex].duplicate = true;
-              row.duplicate = true;
+              formattedRow.duplicate = true;
               duplicateFound = true;
             }
             vendorIdSet.set(vendorId, index);
           }
+
+          return formattedRow;
         });
 
         setIsDuplicateFound(duplicateFound);
@@ -161,16 +172,26 @@ export default function UploadExcelSidebar() {
             import.meta.env.VITE_ENCRYPTION_KEY
           );
           console.log("data", data);
+
+          if (data.success) {
+            toast.current.show({
+              severity: "success",
+              summary: "Upload Successful",
+              detail: "Data has been successfully uploaded.",
+              life: 3000,
+            });
+          } else {
+            toast.current.show({
+              severity: "error",
+              summary: "Error Occured",
+              detail: data.message,
+              life: 3000,
+            });
+          }
         })
         .catch((error) => {
           console.error("Error fetching vendor details:", error);
         });
-      toast.current.show({
-        severity: "success",
-        summary: "Upload Successful",
-        detail: "Data has been successfully uploaded.",
-        life: 3000,
-      });
 
       resetUpload();
     } else {

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { Divider } from "primereact/divider";
 import { TabView, TabPanel } from "primereact/tabview";
@@ -6,19 +6,46 @@ import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputSwitch } from "primereact/inputswitch";
 import { Button } from "primereact/button";
+import axios from "axios";
+import decrypt from "../../helper";
 
 export default function Booking() {
+  const [vendors, setVendors] = useState(null);
   const [partners, setPartners] = useState(null);
   const [value, setValue] = useState("");
   const [parcelType, setParcelType] = useState(null);
+
+  const getPartners = () => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getPartner", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data.partners", data.partners);
+        setVendors(data.partners);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  };
+
+  const handlePdfDownload = () => {
+    window.open("/testingPDF", "_blank");
+  };
+
+  useEffect(() => {
+    getPartners();
+  }, []);
 
   const parcels = [
     { name: "Non-Document", code: 1 },
     { name: "Document", code: 2 },
   ];
-
-  const vendors = JSON.parse(localStorage.getItem("partners"));
-  console.log("vendorsData", vendors);
 
   const [checked, setChecked] = useState(true);
 
@@ -39,7 +66,7 @@ export default function Booking() {
                     inputId="partnerDropDown"
                     onChange={(e) => setPartners(e.value)}
                     options={vendors}
-                    optionLabel="name"
+                    optionLabel="partnersName"
                     className="w-full md:w-14rem"
                     checkmark={true}
                     highlightOnSelect={false}
@@ -60,10 +87,7 @@ export default function Booking() {
                   />
                   <label htmlFor="docType">Type</label>
                 </FloatLabel>
-                <InputSwitch
-                  checked={checked}
-                  onChange={(e) => setChecked(e.value)}
-                />
+
                 <p className="flex align-items-center">
                   <b>Origin : </b> Erode
                 </p>
@@ -225,7 +249,10 @@ export default function Booking() {
                 </div>
               </div>
             </div>
-            <div style={{ marginTop: "20px" }}>
+            <div
+              style={{ marginTop: "20px" }}
+              onClick={() => handlePdfDownload()}
+            >
               <Button>DOWNLOAD</Button>
             </div>
           </TabPanel>

@@ -141,7 +141,7 @@ export default function PartnersSidebar() {
       outlined
       text
       severity="info"
-      icon="pi rpi-pencil"
+      icon="pi pi-pencil"
       onClick={() => handleEdit(rowData)}
     />
   );

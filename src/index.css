@@ -70,3 +70,7 @@ p {
 .partnersVendorId .p-datatable-wrapper {
   scrollbar-width: thin !important;
 }
+
+.transactionDetailsTable .p-datatable-wrapper {
+  scrollbar-width: thin;
+}
