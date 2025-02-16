@@ -179,14 +179,13 @@ export default function Report() {
         ],
       },
     ];
-    setProducts(data);
+    // setProducts(data);
   }, []);
 
   const onRowExpand = (event) => {
     toast.current.show({
       severity: "info",
-      summary: "Product Expanded",
-      detail: event.data.name,
+      summary: "Report Expanded",
       life: 3000,
     });
   };
@@ -194,8 +193,7 @@ export default function Report() {
   const onRowCollapse = (event) => {
     toast.current.show({
       severity: "success",
-      summary: "Product Collapsed",
-      detail: event.data.name,
+      summary: "Report Collapsed",
       life: 3000,
     });
   };
@@ -243,15 +241,20 @@ export default function Report() {
     );
   };
 
+  const handlePdfDownload = () => {
+    window.open("/reportPDF", "_blank");
+  };
+
   return (
     <div>
-      <div>
-        <div className="primaryNav">
-          <p>Report</p>
-          <p className="">Logged in as: Admin</p>
-        </div>
+      <div className="primaryNav">
+        <p>Report</p>
+        <p className="">Logged in as: Admin</p>
       </div>
-      <div className="m-3">
+      <div
+        className="m-3"
+        style={{ scrollbarWidth: "thin", overflow: "hidden" }}
+      >
         <div className="flex mt-3 mb-3 gap-3">
           <Dropdown
             value={selectedVendors}
@@ -274,7 +277,11 @@ export default function Report() {
             onChange={(e) => setEndDate(e.value)}
             placeholder="Pick End Date"
           />
-          <Button label="Generate Report" severity="info" />
+          <Button
+            label="Generate Report"
+            severity="info"
+            onClick={() => handlePdfDownload()}
+          ></Button>
         </div>
         <Toast ref={toast} />
         <DataTable

@@ -21,9 +21,9 @@ const cardsData = [
   { id: 4, title: "Categories", icon: offersIcon },
   { id: 5, title: "Parcel Booking", icon: offersIcon },
   { id: 6, title: "Mapping", icon: category },
-  { id: 7, title: "Employee", icon: restroDoc },
-  { id: 8, title: "Tracking", icon: paymentMethods },
-  { id: 9, title: "Restrictions", icon: money },
+  // { id: 7, title: "Employee", icon: restroDoc },
+  // { id: 8, title: "Tracking", icon: paymentMethods },
+  // { id: 9, title: "Restrictions", icon: money },
 ];
 
 export default function Settings() {

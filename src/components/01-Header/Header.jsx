@@ -20,11 +20,11 @@ import {
 } from "lucide-react";
 
 const routes = [
-  {
-    path: "/",
-    name: "Dashboard",
-    icon: <LayoutGrid />,
-  },
+  // {
+  //   path: "/",
+  //   name: "Dashboard",
+  //   icon: <LayoutGrid />,
+  // },
   {
     path: "/booking",
     name: "Booking",
@@ -55,11 +55,11 @@ const routes = [
     name: "Settings",
     icon: <Cog />,
   },
-  {
-    path: "/profile",
-    name: "Profile",
-    icon: <UserRound />,
-  },
+  // {
+  //   path: "/profile",
+  //   name: "Profile",
+  //   icon: <UserRound />,
+  // },
   {
     path: "/login",
     name: "Logout",
