@@ -21,11 +21,14 @@ export default function Report() {
     const data = [
       {
         id: "1000",
-        code: "f230fh0g3",
-        name: "Bamboo Watch",
+        date: "16-02-2025",
+        pod: "RTP10010-0225",
+        name: "Testing Parcel",
         description: "Product Description",
         image: "bamboo-watch.jpg",
+        leaf: "NM6O9L558999	",
         price: 65,
+        destination: "",
         category: "Accessories",
         quantity: 24,
         inventoryStatus: "INSTOCK",
@@ -33,8 +36,9 @@ export default function Report() {
         orders: [
           {
             id: "1000-0",
+            pod: "RTP10010-0225-001",
+            date: "16-02-2025",
             productCode: "f230fh0g3",
-            date: "2020-09-13",
             amount: 65,
             quantity: 1,
             customer: "David James",
@@ -42,8 +46,9 @@ export default function Report() {
           },
           {
             id: "1000-1",
+            pod: "RTP10010-0225-002",
             productCode: "f230fh0g3",
-            date: "2020-05-14",
+            date: "16-02-2025",
             amount: 130,
             quantity: 2,
             customer: "Leon Rodrigues",
@@ -51,8 +56,9 @@ export default function Report() {
           },
           {
             id: "1000-2",
+            pod: "RTP10010-0225-003",
             productCode: "f230fh0g3",
-            date: "2019-01-04",
+            date: "16-02-2025",
             amount: 65,
             quantity: 1,
             customer: "Juan Alejandro",
@@ -60,8 +66,9 @@ export default function Report() {
           },
           {
             id: "1000-3",
+            pod: "RTP10010-0225-004",
             productCode: "f230fh0g3",
-            date: "2020-09-13",
+            date: "16-02-2025",
             amount: 195,
             quantity: 3,
             customer: "Claire Morrow",
@@ -72,11 +79,15 @@ export default function Report() {
       {
         id: "1001",
         code: "nvklal433",
+        pod: "RTP10011-10225",
+        date: "16-02-2025",
         name: "Black Watch",
         description: "Product Description",
         image: "black-watch.jpg",
         price: 72,
         category: "Accessories",
+        leaf: "NM6O9L558910",
+
         quantity: 61,
         inventoryStatus: "INSTOCK",
         rating: 4,
@@ -84,7 +95,8 @@ export default function Report() {
           {
             id: "1001-0",
             productCode: "nvklal433",
-            date: "2020-05-14",
+            pod: "RTP10011-0225-001",
+            date: "16-02-2025",
             amount: 72,
             quantity: 1,
             customer: "Maisha Jefferson",
@@ -92,8 +104,10 @@ export default function Report() {
           },
           {
             id: "1001-1",
+            pod: "RTP10011-0225-002",
+
             productCode: "nvklal433",
-            date: "2020-02-28",
+            date: "16-02-2025",
             amount: 144,
             quantity: 2,
             customer: "Octavia Murillo",
@@ -104,7 +118,11 @@ export default function Report() {
       {
         id: "1002",
         code: "zz21cz3c1",
+        date: "16-02-2025",
         name: "Blue Band",
+        pod: "RTP10012-0225",
+        leaf: "NM6O9L558911",
+
         description: "Product Description",
         image: "blue-band.jpg",
         price: 79,
@@ -116,16 +134,18 @@ export default function Report() {
           {
             id: "1002-0",
             productCode: "zz21cz3c1",
-            date: "2020-07-05",
+            date: "16-02-2025",
             amount: 79,
+            pod: "RTP10012-0225-001",
             quantity: 1,
             customer: "Stacey Leja",
             status: "DELIVERED",
           },
           {
             id: "1002-1",
+            pod: "RTP10012-0225-002",
             productCode: "zz21cz3c1",
-            date: "2020-02-06",
+            date: "16-02-2025",
             amount: 79,
             quantity: 1,
             customer: "Ashley Wickens",
@@ -135,7 +155,11 @@ export default function Report() {
       },
       {
         id: "1003",
+        pod: "RTP10013-0225",
+        leaf: "NM6O9L5589102",
+
         code: "244wgerg2",
+        date: "16-02-2025",
         name: "Blue T-Shirt",
         description: "Product Description",
         image: "blue-t-shirt.jpg",
@@ -146,40 +170,8 @@ export default function Report() {
         rating: 5,
         orders: [],
       },
-      {
-        id: "1004",
-        code: "h456wer53",
-        name: "Bracelet",
-        description: "Product Description",
-        image: "bracelet.jpg",
-        price: 15,
-        category: "Accessories",
-        quantity: 73,
-        inventoryStatus: "INSTOCK",
-        rating: 4,
-        orders: [
-          {
-            id: "1004-0",
-            productCode: "h456wer53",
-            date: "2020-09-05",
-            amount: 60,
-            quantity: 4,
-            customer: "Mayumi Misaki",
-            status: "PENDING",
-          },
-          {
-            id: "1004-1",
-            productCode: "h456wer53",
-            date: "2019-04-16",
-            amount: 2,
-            quantity: 30,
-            customer: "Francesco Salvatore",
-            status: "DELIVERED",
-          },
-        ],
-      },
     ];
-    // setProducts(data);
+    setProducts(data);
   }, []);
 
   const onRowExpand = (event) => {
@@ -314,22 +306,22 @@ export default function Report() {
             header="POD Number"
             style={{ maxWidth: "5rem" }}
           />
-          <Column field="leaf" header="Leaf" style={{ maxWidth: "3rem" }} />
+          <Column field="leaf" header="Leaf" style={{ maxWidth: "5rem" }} />
           <Column
             field="destination"
             header="Destination"
-            style={{ maxWidth: "3rem" }}
+            style={{ maxWidth: "5rem" }}
           />
-          <Column field="weight" header="Weight" style={{ maxWidth: "3rem" }} />
+          <Column field="weight" header="Weight" style={{ maxWidth: "6rem" }} />
           <Column
             field="freight"
             header="Freight"
-            style={{ maxWidth: "3rem" }}
+            style={{ maxWidth: "7rem" }}
           />
           <Column
             field="pickup"
             header="Pick Up"
-            style={{ maxWidth: "3rem" }}
+            style={{ maxWidth: "7rem" }}
           />
           <Column field="amount" header="Amount" style={{ maxWidth: "3rem" }} />
           <Column field="amount" header="Edit" style={{ maxWidth: "3rem" }} />

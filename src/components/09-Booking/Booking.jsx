@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { Divider } from "primereact/divider";
-// import { TabView, TabPanel } from "primereact/tabview";
+import { TabView, TabPanel } from "primereact/tabview";
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 import { InputSwitch } from "primereact/inputswitch";
@@ -43,10 +43,10 @@ export default function Booking() {
       .post(
         import.meta.env.VITE_API_URL + "/route/bookingTest",
         {
-          partnersName: "DTDC",
-          type: "Express",
-          origin: "New York",
-          destination: "Los Angeles",
+          partnersName: partners,
+          type: parcelType,
+          origin: "Erode",
+          destination: value,
           consignorName: "John Doe",
           consignorAddress: "123 Main St",
           consignorGSTnumber: "27ABCDE1234F1Z5",
@@ -72,7 +72,15 @@ export default function Booking() {
           headers: { Authorization: localStorage.getItem("JWTtoken") },
         }
       )
-      .then(() => getPartners())
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data", data);
+        getPartners();
+      })
       .catch((error) => console.error(error));
   };
 
@@ -94,213 +102,216 @@ export default function Booking() {
         <p className="">Logged in as: Admin</p>
       </div>
       <div className="bookingTab m-4">
-        {/* <TabView> */}
-        {/* <TabPanel header="Place New Order" className=""> */}
-        <div className="mt-2">
-          <div className="flex justify-content-between gap-3">
-            <FloatLabel>
-              <Dropdown
-                value={partners}
-                inputId="partnerDropDown"
-                onChange={(e) => setPartners(e.value)}
-                options={vendors}
-                optionLabel="partnersName"
-                className="w-full md:w-14rem"
-                checkmark={true}
-                highlightOnSelect={false}
-              />
-              <label htmlFor="partnerDropDown">Select Partners</label>
-            </FloatLabel>
+        <TabView>
+          <TabPanel header="Place New Order" className="">
+            <div className="mt-2">
+              <div className="flex justify-content-between gap-3">
+                <FloatLabel>
+                  <Dropdown
+                    value={partners}
+                    inputId="partnerDropDown"
+                    onChange={(e) => setPartners(e.value)}
+                    options={vendors}
+                    optionLabel="partnersName"
+                    className="w-full md:w-14rem"
+                    checkmark={true}
+                    highlightOnSelect={false}
+                  />
+                  <label htmlFor="partnerDropDown">Select Partners</label>
+                </FloatLabel>
 
-            <FloatLabel>
-              <Dropdown
-                value={parcelType}
-                inputId="docType"
-                onChange={(e) => setParcelType(e.value)}
-                options={parcels}
-                optionLabel="name"
-                className="w-full md:w-14rem"
-                checkmark={true}
-                highlightOnSelect={false}
-              />
-              <label htmlFor="docType">Type</label>
-            </FloatLabel>
+                <FloatLabel>
+                  <Dropdown
+                    value={parcelType}
+                    inputId="docType"
+                    onChange={(e) => setParcelType(e.value)}
+                    options={parcels}
+                    optionLabel="name"
+                    className="w-full md:w-14rem"
+                    checkmark={true}
+                    highlightOnSelect={false}
+                  />
+                  <label htmlFor="docType">Type</label>
+                </FloatLabel>
 
-            <p className="flex align-items-center">
-              <b>Origin : </b> Erode
-            </p>
-            <FloatLabel>
-              <InputText
-                id="username"
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-              />
-              <label htmlFor="username">Destination</label>
-            </FloatLabel>
-          </div>
-          <Divider />
+                <p className="flex align-items-center">
+                  <b>Origin : </b> Erode
+                </p>
+                <FloatLabel>
+                  <InputText
+                    id="username"
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                  />
+                  <label htmlFor="username">Destination</label>
+                </FloatLabel>
+              </div>
+              <Divider />
 
-          <div className="flex card justify-content-between">
-            <div className="flex flex-column align-items-start gap-3">
-              <p>Consignor</p>
-              <div className="flex flex-column gap-3 align-items-center justify-content-around">
-                <div className="card flex flex-column md:flex-row gap-3">
+              <div className="flex card justify-content-between">
+                <div className="flex flex-column align-items-start gap-3">
+                  <p>Consignor</p>
+                  <div className="flex flex-column gap-3 align-items-center justify-content-around">
+                    <div className="card flex flex-column md:flex-row gap-3">
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">
+                          <i className="pi pi-user"></i>
+                        </span>
+                        <InputText placeholder="Consignor's Name" />
+                      </div>
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">$</span>
+                        <InputText placeholder="Consignor's Address" />
+                      </div>
+                    </div>
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">$</span>
+                      <InputText placeholder="GST Number" />
+                    </div>
+                    <div className="card flex flex-column md:flex-row gap-3">
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">
+                          <i className="pi pi-user"></i>
+                        </span>
+                        <InputText placeholder="Phone" />
+                      </div>
+                      <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">$</span>
+                        <InputText placeholder="Email" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {/* =================== */}
+                <Divider layout="vertical" />
+                {/* =================== */}
+                <div className="flex flex-column align-items-start gap-3">
+                  <p>Consignee</p>
                   <div className="p-inputgroup flex-1">
-                    <span className="p-inputgroup-addon">
-                      <i className="pi pi-user"></i>
-                    </span>
-                    <InputText placeholder="Consignor's Name" />
+                    <span className="p-inputgroup-addon">$</span>
+                    <InputText placeholder="Customer Ref No." />
+                  </div>
+                  <div className="card flex flex-column md:flex-row gap-3">
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">
+                        <i className="pi pi-user"></i>
+                      </span>
+                      <InputText placeholder="Consignor's Name" />
+                    </div>
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">$</span>
+                      <InputText placeholder="Consignor's Address" />
+                    </div>
                   </div>
                   <div className="p-inputgroup flex-1">
                     <span className="p-inputgroup-addon">$</span>
-                    <InputText placeholder="Consignor's Address" />
+                    <InputText placeholder="GST Number" />
                   </div>
-                </div>
-                <div className="p-inputgroup flex-1">
-                  <span className="p-inputgroup-addon">$</span>
-                  <InputText placeholder="GST Number" />
-                </div>
-                <div className="card flex flex-column md:flex-row gap-3">
-                  <div className="p-inputgroup flex-1">
-                    <span className="p-inputgroup-addon">
-                      <i className="pi pi-user"></i>
-                    </span>
-                    <InputText placeholder="Phone" />
-                  </div>
-                  <div className="p-inputgroup flex-1">
-                    <span className="p-inputgroup-addon">$</span>
-                    <InputText placeholder="Email" />
+                  <div className="card flex flex-column md:flex-row gap-3">
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">
+                        <i className="pi pi-user"></i>
+                      </span>
+                      <InputText placeholder="Phone" />
+                    </div>
+                    <div className="p-inputgroup flex-1">
+                      <span className="p-inputgroup-addon">$</span>
+                      <InputText placeholder="Email" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            {/* =================== */}
-            <Divider layout="vertical" />
-            {/* =================== */}
-            <div className="flex flex-column align-items-start gap-3">
-              <p>Consignee</p>
-              <div className="p-inputgroup flex-1">
-                <span className="p-inputgroup-addon">$</span>
-                <InputText placeholder="Customer Ref No." />
-              </div>
+
+              <Divider />
               <div className="card flex flex-column md:flex-row gap-3">
                 <div className="p-inputgroup flex-1">
                   <span className="p-inputgroup-addon">
                     <i className="pi pi-user"></i>
                   </span>
-                  <InputText placeholder="Consignor's Name" />
+                  <InputText placeholder="Content Specification" />
                 </div>
                 <div className="p-inputgroup flex-1">
-                  <span className="p-inputgroup-addon">$</span>
-                  <InputText placeholder="Consignor's Address" />
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Paper Enclosed" />
                 </div>
               </div>
-              <div className="p-inputgroup flex-1">
-                <span className="p-inputgroup-addon">$</span>
-                <InputText placeholder="GST Number" />
-              </div>
+
+              <Divider />
+
               <div className="card flex flex-column md:flex-row gap-3">
                 <div className="p-inputgroup flex-1">
                   <span className="p-inputgroup-addon">
                     <i className="pi pi-user"></i>
                   </span>
-                  <InputText placeholder="Phone" />
+                  <InputText placeholder="Declared Value" />
                 </div>
                 <div className="p-inputgroup flex-1">
-                  <span className="p-inputgroup-addon">$</span>
-                  <InputText placeholder="Email" />
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="No. Of Pieces" />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Actual Weight" />
+                </div>
+              </div>
+
+              <Divider />
+
+              <InputSwitch
+                checked={checked}
+                onChange={(e) => setChecked(e.value)}
+              />
+
+              <div className="card flex mt-3 flex-column md:flex-row gap-3">
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Height" disabled={!checked} />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Weight" disabled={!checked} />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Breadth" disabled={!checked} />
+                </div>
+                <div className="p-inputgroup flex-1">
+                  <span className="p-inputgroup-addon">
+                    <i className="pi pi-user"></i>
+                  </span>
+                  <InputText placeholder="Charged Weight" disabled={!checked} />
                 </div>
               </div>
             </div>
-          </div>
-
-          <Divider />
-          <div className="card flex flex-column md:flex-row gap-3">
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Content Specification" />
+            <div className="flex gap-3" style={{ paddingBottom: "30px" }}>
+              <div
+                style={{ marginTop: "20px" }}
+                onClick={() => handlePayload()}
+              >
+                <Button>Book Parcel</Button>
+              </div>
+              <div
+                style={{ marginTop: "20px" }}
+                onClick={() => handlePdfDownload()}
+              >
+                <Button>DOWNLOAD</Button>
+              </div>
             </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Paper Enclosed" />
-            </div>
-          </div>
-
-          <Divider />
-
-          <div className="card flex flex-column md:flex-row gap-3">
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Declared Value" />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="No. Of Pieces" />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Actual Weight" />
-            </div>
-          </div>
-
-          <Divider />
-
-          <InputSwitch
-            checked={checked}
-            onChange={(e) => setChecked(e.value)}
-          />
-
-          <div className="card flex mt-3 flex-column md:flex-row gap-3">
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Height" disabled={!checked} />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Weight" disabled={!checked} />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Breadth" disabled={!checked} />
-            </div>
-            <div className="p-inputgroup flex-1">
-              <span className="p-inputgroup-addon">
-                <i className="pi pi-user"></i>
-              </span>
-              <InputText placeholder="Charged Weight" disabled={!checked} />
-            </div>
-          </div>
-        </div>
-        <div className="flex gap-3" style={{ paddingBottom: "30px" }}>
-          <div style={{ marginTop: "20px" }} onClick={() => handlePayload()}>
-            <Button>Book Parcel</Button>
-          </div>
-          <div
-            style={{ marginTop: "20px" }}
-            onClick={() => handlePdfDownload()}
-          >
-            <Button>DOWNLOAD</Button>
-          </div>
-        </div>
-        {/* </TabPanel> */}
-        {/* <TabPanel header="Previous Transactions"></TabPanel> */}
-        {/* </TabView> */}
+          </TabPanel>
+          <TabPanel header="Previous Transactions"></TabPanel>
+        </TabView>
       </div>
     </div>
   );

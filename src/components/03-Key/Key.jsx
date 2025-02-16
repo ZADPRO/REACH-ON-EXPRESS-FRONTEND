@@ -26,9 +26,29 @@ export default function Key() {
   const [selectedState, setSelectedState] = useState(null);
   const [visibleRight, setVisibleRight] = useState(false);
   const [dates, setDates] = useState(null);
+  const [vendors, setVendors] = useState(null);
 
-  const vendors = JSON.parse(localStorage.getItem("partners"));
-  console.log("vendorsData", vendors);
+  useEffect(() => {
+    getPartners();
+  }, []);
+
+  const getPartners = () => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getPartner", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        setVendors(data.partners);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  };
 
   const state = [
     { name: "Not Assigned", code: 1 },
@@ -139,7 +159,7 @@ export default function Key() {
             value={selectedVendors}
             onChange={(e) => setSelectedVendors(e.value)}
             options={vendors}
-            optionLabel="name"
+            optionLabel="partnersName"
             filter
             className="flex-1"
             placeholder="Partners"
