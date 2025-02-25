@@ -172,7 +172,7 @@ export default function Login() {
                 ></Password>
 
                 <div className="flex align-items-center justify-content-between mb-5 gap-5">
-                  <div className="flex align-items-center">
+                  {/* <div className="flex align-items-center">
                     <Checkbox
                       inputId="rememberme1"
                       checked={checked}
@@ -186,7 +186,7 @@ export default function Login() {
                     style={{ color: "#00052e" }}
                   >
                     Forgot password?
-                  </a>
+                  </a> */}
                 </div>
                 <Button
                   label="Sign In"

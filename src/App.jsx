@@ -6,6 +6,9 @@ import {
   Navigate,
 } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useEffect, useState } from "react";
+import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
 
 import Header from "./components/01-Header/Header";
 import Dashboard from "./components/02-Dashboard/Dashboard";
@@ -19,9 +22,8 @@ import Booking from "./components/09-Booking/Booking";
 import Report from "./components/10-Report/Report";
 import TestingPDF from "./components/11-TestingPDF/TestingPDF";
 import ReportPDF from "./components/12-ReportPDF/ReportPDF";
-
-import "./App.css";
 import Finance from "./components/13-Finance/Finance";
+import "./App.css";
 
 function PrivateRoute({ children }) {
   const userDetails = localStorage.getItem("userDetails");
@@ -29,6 +31,20 @@ function PrivateRoute({ children }) {
 }
 
 function App() {
+  const [isMobile, setIsMobile] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const isMobileView = window.innerWidth <= 768;
+      setIsMobile(isMobileView);
+      setShowModal(isMobileView);
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
+
   return (
     <Router>
       <ConditionalHeader>
@@ -118,6 +134,18 @@ function App() {
           />
         </Routes>
       </ConditionalHeader>
+
+      {/* Mobile Warning Modal */}
+      <Dialog
+        visible={showModal}
+        onHide={() => setShowModal(false)}
+        header="Mobile View Warning"
+        modal
+        closable={false}
+        footer={<Button label="OK" onClick={() => setShowModal(false)} />}
+      >
+        <p>For a better experience, please use a laptop or desktop.</p>
+      </Dialog>
     </Router>
   );
 }
