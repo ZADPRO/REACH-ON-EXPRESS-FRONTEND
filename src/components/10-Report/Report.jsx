@@ -71,7 +71,7 @@ export default function Report() {
     console.log("data ----------- 71", data);
     return (
       <div className="p-3">
-        <h5> Data</h5>
+        <h5>{data.vendorLeaf}</h5>
         <DataTable value={data.refParcelBookings}>
           <Column
             field="id"
@@ -160,6 +160,7 @@ export default function Report() {
           onRowToggle={(e) => setExpandedRows(e.data)}
           showGridlines
           scrollable
+          scrollHeight="450px"
           stripedRows
           className="reportDatatable"
           rowExpansionTemplate={rowExpansionTemplate}
@@ -176,13 +177,24 @@ export default function Report() {
             expander={allowExpansion}
             style={{ width: "2rem" }}
           />
-          <Column field="date" header="Date" style={{ width: "5rem" }} />
           <Column
-            field="pod"
+            field="bookedDate"
+            header="Date"
+            style={{ width: "5rem" }}
+            body={(rowData) =>
+              new Date(rowData.bookedDate).toLocaleDateString("en-GB")
+            }
+          />
+          <Column
+            field="vendorLeaf"
             header="POD Number"
             style={{ minWidth: "9rem" }}
           />
-          <Column field="leaf" header="Leaf" style={{ width: "8rem" }} />
+          <Column
+            field="refCustId"
+            header="Leaf"
+            style={{ minWidth: "12rem" }}
+          />
           <Column
             field="destination"
             header="Destination"
@@ -190,8 +202,8 @@ export default function Report() {
           />
           <Column field="weight" header="Weight" style={{ width: "6rem" }} />
           <Column field="freight" header="Freight" style={{ width: "7rem" }} />
-          <Column field="pickup" header="Pick Up" style={{ width: "7rem" }} />
-          <Column field="amount" header="Amount" style={{ width: "6rem" }} />
+          <Column field="pickUP" header="Pick Up" style={{ width: "7rem" }} />
+          <Column field="netAmount" header="Amount" style={{ width: "6rem" }} />
           <Column
             header="Action"
             body={payButtonTemplate}
