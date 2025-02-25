@@ -79,7 +79,14 @@ export default function Report() {
             style={{ maxWidth: "1rem" }}
             body={(rowData, { rowIndex }) => rowIndex + 1}
           ></Column>
-          <Column field="date" header="Date" style={{ maxWidth: "3rem" }} />
+          <Column
+            field="bookedDate"
+            header="Date"
+            style={{ minWidth: "3rem" }}
+            body={(rowData) =>
+              new Date(rowData.bookedDate).toLocaleDateString("en-GB")
+            }
+          />
           <Column
             field="vendorLeaf"
             header="POD Number"
@@ -88,20 +95,25 @@ export default function Report() {
           <Column
             field="destination"
             header="Destination"
-            style={{ maxWidth: "3rem" }}
+            style={{ minWidth: "3rem" }}
           />
-          <Column field="weight" header="Weight" style={{ maxWidth: "3rem" }} />
+          <Column field="" header="Weight" style={{ minWidth: "3rem" }} />
           <Column
             field="freight"
             header="Freight"
-            style={{ maxWidth: "3rem" }}
+            style={{ minWidth: "3rem" }}
           />
           <Column
             field="pickup"
             header="Pick Up"
-            style={{ maxWidth: "3rem" }}
+            style={{ minWidth: "3rem" }}
           />
-          <Column field="amount" header="Amount" style={{ maxWidth: "3rem" }} />
+          <Column field="amount" header="Amount" style={{ minWidth: "3rem" }} />
+          <Column
+            header="Action"
+            body={payButtonTemplate}
+            style={{ minWidth: "8rem" }}
+          />
         </DataTable>
       </div>
     );

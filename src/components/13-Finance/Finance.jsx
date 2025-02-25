@@ -11,16 +11,69 @@ export default function Finance() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const data = Array.from({ length: 6 }, (_, i) => ({
-      id: (i + 1).toString(),
-      code: `${i + 1}`,
-      name: i === 0 ? "Nalla Kadai" : `Client ${i}`,
-      invoice: `INV${1000 + i}`,
-      outstanding: Math.floor(Math.random() * 15000) + 5000,
-      payAmount: "", // Default empty
-      balance: "", // Default empty
-    }));
-    setProducts(data);
+    const storedData = localStorage.getItem("balanceStaticData");
+    if (storedData) {
+      setProducts(JSON.parse(storedData));
+    } else {
+      const staticData = [
+        {
+          id: "1",
+          code: "1",
+          name: "Nalla Kadai",
+          invoice: "INV1000",
+          outstanding: 12000,
+          payAmount: "",
+          balance: 12000, // Initial balance equals outstanding
+        },
+        {
+          id: "2",
+          code: "2",
+          name: "Client 1",
+          invoice: "INV1001",
+          outstanding: 8500,
+          payAmount: "",
+          balance: 8500,
+        },
+        {
+          id: "3",
+          code: "3",
+          name: "Client 2",
+          invoice: "INV1002",
+          outstanding: 13000,
+          payAmount: "",
+          balance: 13000,
+        },
+        {
+          id: "4",
+          code: "4",
+          name: "Client 3",
+          invoice: "INV1003",
+          outstanding: 9500,
+          payAmount: "",
+          balance: 9500,
+        },
+        {
+          id: "5",
+          code: "5",
+          name: "Client 4",
+          invoice: "INV1004",
+          outstanding: 11000,
+          payAmount: "",
+          balance: 11000,
+        },
+        {
+          id: "6",
+          code: "6",
+          name: "Client 5",
+          invoice: "INV1005",
+          outstanding: 14000,
+          payAmount: "",
+          balance: 14000,
+        },
+      ];
+      setProducts(staticData);
+      localStorage.setItem("balanceStaticData", JSON.stringify(staticData));
+    }
   }, []);
 
   // Handle Pay Amount Change
@@ -41,24 +94,21 @@ export default function Finance() {
     });
 
     setProducts(updatedProducts);
+    localStorage.setItem("balanceStaticData", JSON.stringify(updatedProducts));
   };
 
-  // Invoice Button Template
-  const invoiceTemplate = () => (
-    <Button icon="pi pi-download" label="Download" className="p-button-text" />
-  );
+  // Handle Payment Confirmation
+  const confirmPayment = () => {
+    let updatedProducts = products.map((product) =>
+      product.id === selectedProduct.id
+        ? { ...product, outstanding: product.balance }
+        : product
+    );
 
-  // Pay Button Template
-  const payButtonTemplate = (rowData) => (
-    <Button
-      label="Pay"
-      className="p-button-success"
-      onClick={() => {
-        setSelectedProduct(rowData);
-        setVisible(true);
-      }}
-    />
-  );
+    setProducts(updatedProducts);
+    localStorage.setItem("balanceStaticData", JSON.stringify(updatedProducts));
+    setVisible(false);
+  };
 
   return (
     <div>
@@ -79,12 +129,6 @@ export default function Finance() {
             header="Name"
             frozen
             style={{ minWidth: "14rem" }}
-          />
-          <Column
-            field="invoice"
-            header="Invoice"
-            body={invoiceTemplate}
-            style={{ minWidth: "8rem" }}
           />
           <Column
             field="outstanding"
@@ -110,7 +154,16 @@ export default function Finance() {
           />
           <Column
             header="Action"
-            body={payButtonTemplate}
+            body={(rowData) => (
+              <Button
+                label="Pay"
+                className="p-button-success"
+                onClick={() => {
+                  setSelectedProduct(rowData);
+                  setVisible(true);
+                }}
+              />
+            )}
             style={{ minWidth: "8rem" }}
           />
         </DataTable>
@@ -127,11 +180,13 @@ export default function Finance() {
               label="GPay"
               icon="pi pi-wallet"
               className="p-button-primary"
+              onClick={confirmPayment}
             />
             <Button
               label="Cash"
               icon="pi pi-money-bill"
               className="p-button-secondary"
+              onClick={confirmPayment}
             />
           </>
         }
