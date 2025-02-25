@@ -301,9 +301,24 @@ export default function PriceSidebar() {
         <Column field="minWeight" header="Min." style={{ width: "5rem" }} />
         <Column field="maxWeight" header="Max." style={{ width: "5rem" }} />
         <Column field="price" header="Price" style={{ width: "5rem" }} />
-        <Column field="refLength" header="Length" style={{ width: "5rem" }} />
-        <Column field="refBreadth" header="Breadth" style={{ width: "5rem" }} />
-        <Column field="refHeight" header="Height" style={{ width: "5rem" }} />
+        <Column
+          field="refLength"
+          header="Length"
+          style={{ width: "5rem" }}
+          body={(rowData) => rowData.refLength || "-"}
+        />
+        <Column
+          field="refBreadth"
+          header="Breadth"
+          style={{ width: "5rem" }}
+          body={(rowData) => rowData.refBreadth || "-"}
+        />
+        <Column
+          field="refHeight"
+          header="Height"
+          style={{ width: "5rem" }}
+          body={(rowData) => rowData.refHeight || "-"}
+        />
       </DataTable>
     </div>
   );

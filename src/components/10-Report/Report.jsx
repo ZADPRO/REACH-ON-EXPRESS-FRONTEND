@@ -5,6 +5,8 @@ import { Toast } from "primereact/toast";
 import { Dropdown } from "primereact/dropdown";
 import { Calendar } from "primereact/calendar";
 import { Button } from "primereact/button";
+import axios from "axios";
+import decrypt from "../../helper";
 
 export default function Report() {
   const [products, setProducts] = useState([]);
@@ -13,192 +15,64 @@ export default function Report() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const vendors = JSON.parse(localStorage.getItem("vendors")) || [];
-  console.log("vendorsData", vendors);
+  const [customersdetail, setCustoemrDetails] = useState(null);
+
   const toast = useRef(null);
 
+  const getPartners = () => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/Routes/getCustomers", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data", data);
+        setCustoemrDetails(data.Customer);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  };
+
+  const getReportData = () => {
+    axios
+      .get(import.meta.env.VITE_API_URL + "/route/addReport", {
+        headers: { Authorization: localStorage.getItem("JWTtoken") },
+      })
+      .then((res) => {
+        const data = decrypt(
+          res.data[1],
+          res.data[0],
+          import.meta.env.VITE_ENCRYPTION_KEY
+        );
+        console.log("data", data);
+        setProducts(data.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching vendor details:", error);
+      });
+  };
+
   useEffect(() => {
-    const data = [
-      {
-        id: "1000",
-        date: "16-02-2025",
-        pod: "RTP10010-0225",
-        name: "Testing Parcel",
-        description: "Product Description",
-        image: "bamboo-watch.jpg",
-        leaf: "NM6O9L558999	",
-        price: 65,
-        destination: "",
-        category: "Accessories",
-        quantity: 24,
-        inventoryStatus: "INSTOCK",
-        rating: 5,
-        orders: [
-          {
-            id: "1000-0",
-            pod: "RTP10010-0225-001",
-            date: "16-02-2025",
-            productCode: "f230fh0g3",
-            amount: 65,
-            quantity: 1,
-            customer: "David James",
-            status: "PENDING",
-          },
-          {
-            id: "1000-1",
-            pod: "RTP10010-0225-002",
-            productCode: "f230fh0g3",
-            date: "16-02-2025",
-            amount: 130,
-            quantity: 2,
-            customer: "Leon Rodrigues",
-            status: "DELIVERED",
-          },
-          {
-            id: "1000-2",
-            pod: "RTP10010-0225-003",
-            productCode: "f230fh0g3",
-            date: "16-02-2025",
-            amount: 65,
-            quantity: 1,
-            customer: "Juan Alejandro",
-            status: "RETURNED",
-          },
-          {
-            id: "1000-3",
-            pod: "RTP10010-0225-004",
-            productCode: "f230fh0g3",
-            date: "16-02-2025",
-            amount: 195,
-            quantity: 3,
-            customer: "Claire Morrow",
-            status: "CANCELLED",
-          },
-        ],
-      },
-      {
-        id: "1001",
-        code: "nvklal433",
-        pod: "RTP10011-10225",
-        date: "16-02-2025",
-        name: "Black Watch",
-        description: "Product Description",
-        image: "black-watch.jpg",
-        price: 72,
-        category: "Accessories",
-        leaf: "NM6O9L558910",
-
-        quantity: 61,
-        inventoryStatus: "INSTOCK",
-        rating: 4,
-        orders: [
-          {
-            id: "1001-0",
-            productCode: "nvklal433",
-            pod: "RTP10011-0225-001",
-            date: "16-02-2025",
-            amount: 72,
-            quantity: 1,
-            customer: "Maisha Jefferson",
-            status: "DELIVERED",
-          },
-          {
-            id: "1001-1",
-            pod: "RTP10011-0225-002",
-
-            productCode: "nvklal433",
-            date: "16-02-2025",
-            amount: 144,
-            quantity: 2,
-            customer: "Octavia Murillo",
-            status: "PENDING",
-          },
-        ],
-      },
-      {
-        id: "1002",
-        code: "zz21cz3c1",
-        date: "16-02-2025",
-        name: "Blue Band",
-        pod: "RTP10012-0225",
-        leaf: "NM6O9L558911",
-
-        description: "Product Description",
-        image: "blue-band.jpg",
-        price: 79,
-        category: "Fitness",
-        quantity: 2,
-        inventoryStatus: "LOWSTOCK",
-        rating: 3,
-        orders: [
-          {
-            id: "1002-0",
-            productCode: "zz21cz3c1",
-            date: "16-02-2025",
-            amount: 79,
-            pod: "RTP10012-0225-001",
-            quantity: 1,
-            customer: "Stacey Leja",
-            status: "DELIVERED",
-          },
-          {
-            id: "1002-1",
-            pod: "RTP10012-0225-002",
-            productCode: "zz21cz3c1",
-            date: "16-02-2025",
-            amount: 79,
-            quantity: 1,
-            customer: "Ashley Wickens",
-            status: "DELIVERED",
-          },
-        ],
-      },
-      {
-        id: "1003",
-        pod: "RTP10013-0225",
-        leaf: "NM6O9L5589102",
-
-        code: "244wgerg2",
-        date: "16-02-2025",
-        name: "Blue T-Shirt",
-        description: "Product Description",
-        image: "blue-t-shirt.jpg",
-        price: 29,
-        category: "Clothing",
-        quantity: 25,
-        inventoryStatus: "INSTOCK",
-        rating: 5,
-        orders: [],
-      },
-    ];
-    setProducts(data);
+    getPartners();
+    getReportData();
   }, []);
 
-  const onRowExpand = (event) => {
-    toast.current.show({
-      severity: "info",
-      summary: "Report Expanded",
-      life: 3000,
-    });
-  };
-
-  const onRowCollapse = (event) => {
-    toast.current.show({
-      severity: "success",
-      summary: "Report Collapsed",
-      life: 3000,
-    });
-  };
-
   const allowExpansion = (rowData) => {
-    return rowData.orders.length > 0;
+    console.log("rowData line 66", rowData.refParcelBookings);
+    return rowData.refParcelBookings.length > 0;
   };
 
   const rowExpansionTemplate = (data) => {
+    console.log("data ----------- 71", data);
     return (
       <div className="p-3">
-        <h5>Orders for {data.name}</h5>
-        <DataTable value={data.orders}>
+        <h5> Data</h5>
+        <DataTable value={data.refParcelBookings}>
           <Column
             field="id"
             header="S.No"
@@ -207,9 +81,9 @@ export default function Report() {
           ></Column>
           <Column field="date" header="Date" style={{ maxWidth: "3rem" }} />
           <Column
-            field="pod"
+            field="vendorLeaf"
             header="POD Number"
-            style={{ maxWidth: "3rem" }}
+            style={{ minWidth: "8rem" }}
           />
           <Column
             field="destination"
@@ -237,6 +111,10 @@ export default function Report() {
     window.open("/reportPDF", "_blank");
   };
 
+  const payButtonTemplate = (rowData) => (
+    <Button label="Edit" className="p-button-success" />
+  );
+
   return (
     <div>
       <div className="primaryNav">
@@ -251,12 +129,12 @@ export default function Report() {
           <Dropdown
             value={selectedVendors}
             onChange={(e) => setSelectedVendors(e.value)}
-            options={vendors}
-            optionLabel="name"
+            options={customersdetail}
+            optionLabel="refCustomerName"
             style={{ maxWidth: "14rem" }}
             filter
             className="flex-1"
-            placeholder="Partners"
+            placeholder="Customers"
             maxSelectedLabels={3}
           />
           <Calendar
@@ -280,8 +158,6 @@ export default function Report() {
           value={products}
           expandedRows={expandedRows}
           onRowToggle={(e) => setExpandedRows(e.data)}
-          onRowExpand={onRowExpand}
-          onRowCollapse={onRowCollapse}
           showGridlines
           scrollable
           stripedRows
@@ -292,7 +168,7 @@ export default function Report() {
           <Column
             field="id"
             header="S.No"
-            style={{ maxWidth: "1rem" }}
+            style={{ width: "1rem" }}
             body={(rowData, { rowIndex }) => rowIndex + 1}
           ></Column>
           <Column
@@ -300,31 +176,27 @@ export default function Report() {
             expander={allowExpansion}
             style={{ width: "2rem" }}
           />
-          <Column field="date" header="Date" style={{ maxWidth: "3rem" }} />
+          <Column field="date" header="Date" style={{ width: "5rem" }} />
           <Column
             field="pod"
             header="POD Number"
-            style={{ maxWidth: "5rem" }}
+            style={{ minWidth: "9rem" }}
           />
-          <Column field="leaf" header="Leaf" style={{ maxWidth: "5rem" }} />
+          <Column field="leaf" header="Leaf" style={{ width: "8rem" }} />
           <Column
             field="destination"
             header="Destination"
-            style={{ maxWidth: "5rem" }}
+            style={{ width: "5rem" }}
           />
-          <Column field="weight" header="Weight" style={{ maxWidth: "6rem" }} />
+          <Column field="weight" header="Weight" style={{ width: "6rem" }} />
+          <Column field="freight" header="Freight" style={{ width: "7rem" }} />
+          <Column field="pickup" header="Pick Up" style={{ width: "7rem" }} />
+          <Column field="amount" header="Amount" style={{ width: "6rem" }} />
           <Column
-            field="freight"
-            header="Freight"
-            style={{ maxWidth: "7rem" }}
+            header="Action"
+            body={payButtonTemplate}
+            style={{ minWidth: "8rem" }}
           />
-          <Column
-            field="pickup"
-            header="Pick Up"
-            style={{ maxWidth: "7rem" }}
-          />
-          <Column field="amount" header="Amount" style={{ maxWidth: "3rem" }} />
-          <Column field="amount" header="Edit" style={{ maxWidth: "3rem" }} />
         </DataTable>
       </div>
     </div>

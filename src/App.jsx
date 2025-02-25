@@ -21,6 +21,7 @@ import TestingPDF from "./components/11-TestingPDF/TestingPDF";
 import ReportPDF from "./components/12-ReportPDF/ReportPDF";
 
 import "./App.css";
+import Finance from "./components/13-Finance/Finance";
 
 function PrivateRoute({ children }) {
   const userDetails = localStorage.getItem("userDetails");
@@ -88,6 +89,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Profile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/finance"
+            element={
+              <PrivateRoute>
+                <Finance />
               </PrivateRoute>
             }
           />

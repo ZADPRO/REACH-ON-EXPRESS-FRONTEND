@@ -19,26 +19,12 @@ export default function VendorSidebar() {
   const [notes, setNotes] = useState("");
 
   const [checked, setChecked] = useState(false);
+  console.log("checked", checked);
 
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("vendors")) || [];
     setCustomersDetails(storedProducts);
     getPartners();
-    axios
-      .get(import.meta.env.VITE_API_URL + "/Routes/getPartner", {
-        headers: { Authorization: localStorage.getItem("JWTtoken") },
-      })
-      .then((res) => {
-        const data = decrypt(
-          res.data[1],
-          res.data[0],
-          import.meta.env.VITE_ENCRYPTION_KEY
-        );
-        // setPartnerDetails(data.partners);
-      })
-      .catch((error) => {
-        console.error("Error fetching vendor details:", error);
-      });
   }, []);
 
   const getPartners = () => {
@@ -72,31 +58,37 @@ export default function VendorSidebar() {
       setCustomersDetails(newProducts);
       // localStorage.setItem("vendors", JSON.stringify(newProducts));
       try {
-        const response = axios.post(
-          import.meta.env.VITE_API_URL + "/Routes/addCustomer",
-          {
-            customerName: customer,
-            customerCode: code,
-            customerType: regularMode,
-            notes: notes,
-            refAddress: address,
-            refPhone: phone,
-          },
-          {
-            headers: {
-              Authorization: localStorage.getItem("JWTtoken"),
+        axios
+          .post(
+            import.meta.env.VITE_API_URL + "/Routes/addCustomer",
+            {
+              customerName: customer,
+              customerCode: code,
+              customerType: regularMode,
+              notes: notes,
+              refAddress: address,
+              refPhone: phone,
             },
-          }
-        );
-
-        const data = decrypt(
-          response.data[1],
-          response.data[0],
-          import.meta.env.VITE_ENCRYPTION_KEY
-        );
-        console.log("data", data);
-
-        localStorage.setItem("JWTtoken", "Bearer " + data.token);
+            {
+              headers: {
+                Authorization: localStorage.getItem("JWTtoken"),
+              },
+            }
+          )
+          .then((res) => {
+            const data = decrypt(
+              res.data[1],
+              res.data[0],
+              import.meta.env.VITE_ENCRYPTION_KEY
+            );
+            console.log("data", data);
+            if (data.success) {
+              getPartners();
+            }
+          })
+          .catch((error) => {
+            console.error("Error fetching vendor details:", error);
+          });
       } catch (error) {
         console.error(error);
       }
@@ -241,7 +233,7 @@ export default function VendorSidebar() {
           field="refCustomerName"
           frozen
           header="Customers"
-          style={{ minWidth: "10rem" }}
+          style={{ minWidth: "20rem" }}
         ></Column>
         <Column
           field="refCode"

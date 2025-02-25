@@ -46,31 +46,9 @@ export default function PartnersSidebar() {
 
   const addOrUpdatePartner = () => {
     if (partners.trim()) {
-      if (editingPartner) {
-        const updatedPartners = partnerDetails.map((p) =>
-          p.id === editingPartner.id
-            ? {
-                ...p,
-                partnersName: partners,
-                phoneNumber: contactDetails,
-                validity,
-              }
-            : p
-        );
-        setPartnerDetails(updatedPartners);
-      } else {
-        const newPartner = {
-          id: partnerDetails.length + 1,
-          partnersName: partners,
-          phoneNumber: contactDetails,
-          validity,
-        };
-        setPartnerDetails([...partnerDetails, newPartner]);
-      }
-
       axios
         .post(
-          import.meta.env.VITE_API_URL + "/Routes/addOrUpdatePartners",
+          import.meta.env.VITE_API_URL + "/Routes/addPartners",
           {
             partnersName: partners,
             validityDate: validity,

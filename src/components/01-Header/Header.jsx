@@ -14,6 +14,7 @@ import {
   LogOut,
   Menu,
   Package,
+  ReceiptIndianRupee,
   Truck,
   UserRound,
   UserRoundPlus,
@@ -46,6 +47,11 @@ const routes = [
     icon: <Truck />,
   },
   {
+    path: "/finance",
+    name: "Finance",
+    icon: <ReceiptIndianRupee />,
+  },
+  {
     path: "/report",
     name: "Report",
     icon: <FileCheck />,
@@ -55,11 +61,11 @@ const routes = [
     name: "Settings",
     icon: <Cog />,
   },
-  {
-    path: "/profile",
-    name: "Profile",
-    icon: <UserRound />,
-  },
+  // {
+  //   path: "/profile",
+  //   name: "Profile",
+  //   icon: <UserRound />,
+  // },
   {
     path: "/login",
     name: "Logout",
